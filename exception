@@ -1,0 +1,41 @@
+Templates:[
+ 2{&}1855B{&}_65808F2B: to=<i{&}@{hostname}>, relay=none, delay=144818, delays={delays_{&}}/{&}30/0, dsn=4.4.1, status=deferred (connect to {hostname}[{ip_address}]:25: Operation timed out),  
+ 2{&}1855B{&}_65808F2B: to=<{&}i{&}@{hostname}>, relay=none, delay=144818, delays={delays_{&}}/{&}30/0, dsn=4.4.1, status=deferred (connect to {hostname}[{ip_address}]:25: Operation timed out), 
+ 2{&}1855B{&}_65808F2B: to=<{&}i{&}@{hostname}>, relay=none, delay=144818, delays={delays_{&}}/{&}30/0, dsn=4.4.1, status=deferred (connect to {hostname}[{ip_address}]:25: Operation timed out), 
+ 2{&}1855B{&}_65808F2B: to=<i{&}@{hostname}>, relay=none, delay=144818, delays={delays_{&}}/{&}30/0, dsn=4.4.1, status=deferred (connect to {hostname}[{ip_address}]:25: Operation timed out), 
+ 2{&}1855B{&}_65808F2B: to=<i{&}@{hostname}>, relay=none, delay=144818, delays={&}{delays_{&}}/30/0, dsn=4.4.1, status=deferred (connect to {hostname}[{ip_address}]:25: Operation timed out),
+ 2{&}1855B{&}_65808F2B: to=<i{&}@{hostname}>, relay=none, delay=144818, delays={&}{delays_{&}}/30/0, dsn=4.4.1, status=deferred (connect to {hostname}[{ip_address}]:25: Operation timed out)]
+UnitedTemplate: 2{&}1855B{&}_65808F2B: to=<{&}i{&}@{hostname}>, relay=none, delay=144818, delays={delays_{&}}/{&}30/0, dsn=4.4.1, status=deferred (connect to {hostname}[{ip_address}]:25: Operation timed out)
+CurrentTemplate: 2{&}1855B{&}_65808F2B: to=<i{&}@{hostname}>, relay=none, delay=144818, delays={&}{delays_{&}}/30/0, dsn=4.4.1, status=deferred (connect to {hostname}[{ip_address}]:25: Operation timed out)
+i:83
+j:80
+
+SourceMessages:[
+ 234751855B85_65808F2B: to=<info@kable.ru>, relay=none, delay=144818, delays=144788/0.05/30/0, dsn=4.4.1, status=deferred (connect to kable.ru[195.128.121.187]:25: Operation timed out),
+ 234751855B85_65808F2B: to=<ship@kamak.ru>, relay=none, delay=144818, delays=144788/0.06/30/0, dsn=4.4.1, status=deferred (connect to kamak.ru[91.195.240.93]:25: Operation timed out),
+ 234751855B85_65808F2B: to=<admin@kemz.com.ru>, relay=none, delay=144818, delays=144788/0.08/30/0, dsn=4.4.1, status=deferred (connect to kemz.com.ru[178.210.89.119]:25: Operation timed out),
+ 2344B1855B72_65808F2B: to=<info@mostootryad19.spb.ru>, relay=none, delay=144818, delays=144788/0.11/30/0, dsn=4.4.1, status=deferred (connect to mostootryad19.spb.ru[178.210.89.119]:25: Operation timed out),
+ 2344B1855B72_65808F2B: to=<info@oaoprominvest.ru>, relay=none, delay=144818, delays=144788/0.15/30/0, dsn=4.4.1, status=deferred (connect to oaoprominvest.ru[144.76.247.203]:25: Operation timed out),
+ 2344B1855B72_65808F2B: to=<info@nzshv.ru>, relay=none, delay=144818, delays=144788/0.15/30/0, dsn=4.4.1, status=deferred (connect to nzshv.ru[212.193.240.148]:25: Operation timed out),
+ 26C771855B8A_65808F2B: to=<info@exppodship.spb.ru>, relay=none, delay=144818, delays=144788/0.16/30/0, dsn=4.4.1, status=deferred (connect to exppodship.spb.ru[178.210.89.119]:25: Operation timed out)]
+ 
+ 
+Templates_gen1:[
+ 234751855B85_65808F2B: to=<info@{hostname}>, relay=none, delay=144818, delays=144788/0.05/30/0, dsn=4.4.1, status=deferred (connect to {hostname}[{ip_address}]:25: Operation timed out),
+ 234751855B85_65808F2B: to=<ship@{hostname}>, relay=none, delay=144818, delays=144788/0.06/30/0, dsn=4.4.1, status=deferred (connect to {hostname}[{ip_address}]:25: Operation timed out),
+ 234751855B85_65808F2B: to=<admin@{hostname}>, relay=none, delay=144818, delays=144788/0.08/30/0, dsn=4.4.1, status=deferred (connect to {hostname}[{ip_address}]:25: Operation timed out),
+ 2344B1855B72_65808F2B: to=<info@{hostname}>, relay=none, delay=144818, delays=144788/0.11/30/0, dsn=4.4.1, status=deferred (connect to {hostname}[{ip_address}]:25: Operation timed out),
+ 2344B1855B72_65808F2B: to=<info@{hostname}>, relay=none, delay=144818, delays=144788/0.15/30/0, dsn=4.4.1, status=deferred (connect to {hostname}[{ip_address}]:25: Operation timed out),
+ 2344B1855B72_65808F2B: to=<info@{hostname}>, relay=none, delay=144818, delays=144788/0.15/30/0, dsn=4.4.1, status=deferred (connect to {hostname}[{ip_address}]:25: Operation timed out),
+ 26C771855B8A_65808F2B: to=<info@{hostname}>, relay=none, delay=144818, delays=144788/0.16/30/0, dsn=4.4.1, status=deferred (connect to {hostname}[{ip_address}]:25: Operation timed out)]
+
+ 
+Templates_gen2:[
+" 234751855B85_65808F2B: to=<info@{hostname}>, relay=none, delay=144818, delays={delays_1}/{delays_2}/30/0, dsn=4.4.1, status=deferred (connect to {hostname}[{ip_address}]:25: Operation timed out)",
+" 234751855B85_65808F2B: to=<ship@{hostname}>, relay=none, delay=144818, delays={delays_1}/{delays_2}/30/0, dsn=4.4.1, status=deferred (connect to {hostname}[{ip_address}]:25: Operation timed out)",
+" 234751855B85_65808F2B: to=<admin@{hostname}>, relay=none, delay=144818, delays={delays_1}/{delays_2}/30/0, dsn=4.4.1, status=deferred (connect to {hostname}[{ip_address}]:25: Operation timed out)",
+" 2344B1855B72_65808F2B: to=<info@{hostname}>, relay=none, delay=144818, delays={delays_1}/{delays_2}/30/0, dsn=4.4.1, status=deferred (connect to {hostname}[{ip_address}]:25: Operation timed out)",
+" 2344B1855B72_65808F2B: to=<info@{hostname}>, relay=none, delay=144818, delays={delays_1}/{delays_2}/30/0, dsn=4.4.1, status=deferred (connect to {hostname}[{ip_address}]:25: Operation timed out)",
+" 2344B1855B72_65808F2B: to=<info@{hostname}>, relay=none, delay=144818, delays={delays_1}/{delays_2}/30/0, dsn=4.4.1, status=deferred (connect to {hostname}[{ip_address}]:25: Operation timed out)",
+" 26C771855B8A_65808F2B: to=<info@{hostname}>, relay=none, delay=144818, delays={delays_1}/{delays_2}/30/0, dsn=4.4.1, status=deferred (connect to {hostname}[{ip_address}]:25: Operation timed out)"]
+ 
