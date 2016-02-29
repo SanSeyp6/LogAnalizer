@@ -24,6 +24,9 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
+import composites.SourceDataComposite;
+import util.Util;
+
 
 public class TemplatesComposite extends Composite {
 
@@ -128,7 +131,7 @@ public class TemplatesComposite extends Composite {
 						Files.write(Paths.get(fileName), templates, StandardOpenOption.CREATE, StandardOpenOption.WRITE);
 					} catch (IOException e1) {
 						e1.printStackTrace();
-						MessageDialog.openError(getShell(), "Error opening file", SourceDataComposite.getStackTrace(e1));
+						MessageDialog.openError(getShell(), "Error opening file", Util.getStackTrace(e1));
 					}
 				}
 			}

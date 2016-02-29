@@ -14,6 +14,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
 
+import composites.SourceDataComposite;
+
 
 public class BackupOfTestingFrame {
 	private final Display display;

@@ -1,13 +1,8 @@
-package main;
+package composites;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -25,15 +20,36 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.json.simple.parser.ParseException;
 
+import main.ReadJsonLogFile;
+import util.Util;
+
 public class SourceDataComposite extends Composite {
 	private ListViewer listViewer;
 	private List<String> messages;
+	private MenuItem fileMenuItem;
+	private Menu fileMenu;
+	private Menu mainMenuBar;
 	private MenuItem mntmOpenDataFile;
 	private MenuItem openMessagesFlatMenuItem;
 	
 	public SourceDataComposite(Composite parent, int style) {
 		super(parent, style);
 		setLayout(new FillLayout(SWT.HORIZONTAL));
+		
+		mainMenuBar = getShell().getMenuBar();
+		if (mainMenuBar == null){
+			mainMenuBar = new Menu(getShell(), SWT.BAR);
+			getShell().setMenuBar(mainMenuBar);
+			//throw new RuntimeException("Main menu bar is not set for current window/shell!");
+		}
+		
+		fileMenuItem = new MenuItem(mainMenuBar, SWT.CASCADE);
+		fileMenuItem.setText("File");
+		fileMenu = new Menu(fileMenuItem);
+		fileMenuItem.setMenu(fileMenu);
+
+		addOpenJsonDataFileMenuItem(fileMenu);
+		addOpenFlatDataFileMenuItem(fileMenu);
 
 		listViewer = new ListViewer(this, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		listViewer.setContentProvider(ArrayContentProvider.getInstance());
@@ -58,7 +74,7 @@ public class SourceDataComposite extends Composite {
 		listViewer.setInput(list);
 	}
 
-	public void addOpenDataFileMenuItem(Menu menu) {
+	private void addOpenJsonDataFileMenuItem(Menu menu) {
 		mntmOpenDataFile = new MenuItem(menu, SWT.NONE);
 		mntmOpenDataFile.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -74,18 +90,18 @@ public class SourceDataComposite extends Composite {
 						setInput(messages);
 					} catch (IOException e1) {
 						e1.printStackTrace();
-						MessageDialog.openError(getShell(), "Error opening file", getStackTrace(e1));
+						MessageDialog.openError(getShell(), "Error opening file", Util.getStackTrace(e1));
 					} catch (ParseException e1) {
 						e1.printStackTrace();
-						MessageDialog.openError(getShell(), "Error while parsing file", getStackTrace(e1));
+						MessageDialog.openError(getShell(), "Error while parsing file", Util.getStackTrace(e1));
 					}
 				}
 			}
 		});
-		mntmOpenDataFile.setText("Open data file");
+		mntmOpenDataFile.setText("Open JSON data file");
 	}
 
-	public void addOpenFlatDataFileMenuItem(Menu menu) {
+	private void addOpenFlatDataFileMenuItem(Menu menu) {
 		openMessagesFlatMenuItem = new MenuItem(menu, SWT.NONE);
 		openMessagesFlatMenuItem.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -99,7 +115,7 @@ public class SourceDataComposite extends Composite {
 						setInput(messages);
 					} catch (IOException e1) {
 						e1.printStackTrace();
-						MessageDialog.openError(getShell(), "Error opening file", getStackTrace(e1));
+						MessageDialog.openError(getShell(), "Error opening file", Util.getStackTrace(e1));
 					}
 				}
 			}
@@ -107,31 +123,6 @@ public class SourceDataComposite extends Composite {
 		openMessagesFlatMenuItem.setText("Open flat data file");
 	}
 
-	
-	/**
-	 * Преобразует вывод метода {@link Exception#getStackTrace()} в строку для дальнейшего использования
-	 * @param ex исключение, вывод которого необходимо получить как строку
-	 * @return строка, содержащая вывод метода {@link Exception#getStackTrace()}
-	 */
-	public static String getStackTrace(Exception ex) {
-		StringWriter errors = new StringWriter();
-		ex.printStackTrace(new PrintWriter(errors));
-		return errors.toString();
-	}
-
-	/**
-	 * Удаляет дублирующиеся элементы из переданного списка строк. Возвращает
-	 * новый список строк без дублирующихся элементов. Исходный порядок
-	 * элементов в возвращаемом списке сохраняется
-	 * 
-	 * @param list передаваемый список для удаления дублирующихся элементов
-	 * @return список без дублирующихся элементов
-	 */
-	public static List<String> removeDuplicatesFromStringList(List<String> list) {
-		Set<String> set = new LinkedHashSet<String>(list);
-		return new ArrayList<String>(set);
-	}
-	
 	public List<String> getMessages() {
 		return messages;
 	}

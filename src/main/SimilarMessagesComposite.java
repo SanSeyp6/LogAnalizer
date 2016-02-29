@@ -316,18 +316,6 @@ public class SimilarMessagesComposite extends Composite {
 		return templates;
 	}
 
-	private static List<TreeNode> createTemplateTreeNodes() {
-		List<TreeNode> treeNodes = new ArrayList<TreeNode>();
-		TreeNode node;
-
-		for (String s : new String[] { "one", "two", "three" }) {
-			node = new TreeNode(s);
-			treeNodes.add(node);
-		}
-
-		return treeNodes;
-	}
-
 	public static class TreeNode{
 		private final PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
 		private String text;
