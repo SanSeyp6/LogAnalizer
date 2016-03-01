@@ -1,4 +1,4 @@
-package main;
+package composites;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -9,12 +9,14 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.layout.GridData;
 
 
-public class AddTemplateDialog extends Dialog {
+public class EditTemplateDialog extends Dialog {
 	private Text text;
+	private String currentValue;
 	private String newValue;
 
-	public AddTemplateDialog(Shell parentShell) {
+	public EditTemplateDialog(Shell parentShell, String currentValue) {
 		super(parentShell);
+		this.currentValue = currentValue;
 	}
 
 	@Override
@@ -22,19 +24,18 @@ public class AddTemplateDialog extends Dialog {
 		Composite container = (Composite) super.createDialogArea(parent);
 		
 		Label lblEnterNewValue = new Label(container, SWT.NONE);
-		lblEnterNewValue.setText("Enter value:");
+		lblEnterNewValue.setText("Enter new value:");
 		
 		text = new Text(container, SWT.BORDER);
 		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		text.setText("New template");
-		text.selectAll();;
+		text.setText(currentValue);
 		return container;
 	}
 	
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
-		newShell.setText("Add template");
+		newShell.setText("Edit template");
 	}
 	
 	@Override

@@ -16,7 +16,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
-import main.InverseReplacementComposite;
 import main.TestingFrame;
 import util.ParseMessage;
 

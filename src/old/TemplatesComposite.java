@@ -24,8 +24,8 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
-import main.AddTemplateDialog;
-import main.EditTemplateDialog;
+import composites.AddTemplateDialog;
+import composites.EditTemplateDialog;
 import util.Util;
 
 

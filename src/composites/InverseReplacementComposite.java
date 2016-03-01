@@ -1,5 +1,6 @@
 package composites;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,7 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
+import main.TestingFrame;
 import util.ParseMessage;
 
 public class InverseReplacementComposite extends GeneralComposite {
@@ -42,48 +44,6 @@ public class InverseReplacementComposite extends GeneralComposite {
 		content.setLayout(new FillLayout(SWT.HORIZONTAL));
 
 		TabFolder tabFolder = new TabFolder(content, SWT.NONE);
-
-		TabItem tbtmInversemap = new TabItem(tabFolder, SWT.NONE);
-		tbtmInversemap.setText("Inverse Map");
-
-		tableViewer = new TableViewer(tabFolder, SWT.BORDER | SWT.FULL_SELECTION);
-		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-		table = tableViewer.getTable();
-		table.setLinesVisible(true);
-		table.setHeaderVisible(true);
-		tbtmInversemap.setControl(table);
-
-		TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
-		TableColumn tblclmnValue = tableViewerColumn.getColumn();
-		tblclmnValue.setWidth(100);
-		tblclmnValue.setText("Value");
-		tableViewerColumn.setLabelProvider(new ColumnLabelProvider() {
-			@Override
-			public String getText(Object element) {
-				if (element instanceof Map.Entry<?, ?>) {
-					Map.Entry<String, List<String>> entry = (Entry<String, List<String>>) element;
-					return entry.getKey();
-				} else {
-					return super.getText(element);
-				}
-			}
-		});
-
-		TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(tableViewer, SWT.NONE);
-		TableColumn tblclmnAttributes = tableViewerColumn_1.getColumn();
-		tblclmnAttributes.setWidth(100);
-		tblclmnAttributes.setText("Attributes");
-		tableViewerColumn_1.setLabelProvider(new ColumnLabelProvider() {
-			@Override
-			public String getText(Object element) {
-				if (element instanceof Map.Entry<?, ?>) {
-					Map.Entry<String, List<String>> entry = (Entry<String, List<String>>) element;
-					return entry.getValue().toString();
-				} else {
-					return super.getText(element);
-				}
-			}
-		});
 
 		TabItem tbtmCheckReplacedValues_1 = new TabItem(tabFolder, SWT.NONE);
 		tbtmCheckReplacedValues_1.setText("Check Replaced Values");
@@ -150,12 +110,56 @@ public class InverseReplacementComposite extends GeneralComposite {
 				checkboxTableViewer.setAllChecked(false);
 			}
 		});
+
+		TabItem tbtmInversemap = new TabItem(tabFolder, SWT.NONE);
+		tbtmInversemap.setText("Inverse Map");
+
+		tableViewer = new TableViewer(tabFolder, SWT.BORDER | SWT.FULL_SELECTION);
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		table = tableViewer.getTable();
+		table.setLinesVisible(true);
+		table.setHeaderVisible(true);
+		tbtmInversemap.setControl(table);
+
+		TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+		TableColumn tblclmnValue = tableViewerColumn.getColumn();
+		tblclmnValue.setWidth(100);
+		tblclmnValue.setText("Value");
+		tableViewerColumn.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				if (element instanceof Map.Entry<?, ?>) {
+					Map.Entry<String, List<String>> entry = (Entry<String, List<String>>) element;
+					return entry.getKey();
+				} else {
+					return super.getText(element);
+				}
+			}
+		});
+
+		TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(tableViewer, SWT.NONE);
+		TableColumn tblclmnAttributes = tableViewerColumn_1.getColumn();
+		tblclmnAttributes.setWidth(100);
+		tblclmnAttributes.setText("Attributes");
+		tableViewerColumn_1.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				if (element instanceof Map.Entry<?, ?>) {
+					Map.Entry<String, List<String>> entry = (Entry<String, List<String>>) element;
+					return entry.getValue().toString();
+				} else {
+					return super.getText(element);
+				}
+			}
+		});
+
+		nextButton.setEnabled(true);
 	}
 
 	public void replaceValuesWithNames(List<String> messages) {
-		replacements=new HashMap<String,String>();
+		replacements = new HashMap<String, String>();
 		String oldMessage, newMessage;
-		int oldMessageIndex;
+		// int oldMessageIndex;
 		String regexp;
 
 		for (int i = 0; i < messages.size(); i++) {
@@ -180,28 +184,84 @@ public class InverseReplacementComposite extends GeneralComposite {
 					 * "дообучая" разбор =)
 					 */
 					regexp = ParseMessage.escapeSpecialRegexChars(entry.getKey());
-					oldMessage=messages.get(i);
-					newMessage=oldMessage.replaceAll(regexp, "{" + entry.getValue().get(0) + "}");
-					//messages.set(i, messages.get(i).replaceAll(regexp, "{" + entry.getValue().get(0) + "}"));
-					if(!oldMessage.equals(newMessage)){
+					oldMessage = messages.get(i);
+					newMessage = oldMessage.replaceAll(regexp, "{" + entry.getValue().get(0) + "}");
+					// messages.set(i, messages.get(i).replaceAll(regexp, "{" +
+					// entry.getValue().get(0) + "}"));
+					if (!oldMessage.equals(newMessage)) {
 						replacements.put(oldMessage, newMessage);
 					}
 					continue;
 				} else {
-					System.out.println("Ambigious value: " + entry.getKey());
+					// System.out.println("Ambigious value: " + entry.getKey());
 				}
 			}
 		}
-		
-		//		return replacements;
+
+		// return replacements;
 		checkboxTableViewer.setInput(replacements.entrySet());
+		for (TableColumn column : table_2.getColumns()) {
+			column.pack();
+		}
 	}
 
-	
+	public void buildInverseMap(List<ParseMessagesComposite.Entry> entries) {
+		Map<String, List<String>> returnMap = new HashMap<String, List<String>>();
+		Map<String, String> valuesMap;
+		List<String> list;
+
+		for (ParseMessagesComposite.Entry pEntry : entries) {
+			valuesMap = pEntry.getParsedValues();
+			for (Entry<String, String> entry : valuesMap.entrySet()) {
+				// TODO надо найти нормальный способ проверки, что
+				// строка является числом.
+				try {
+					Integer.parseInt(entry.getKey());
+				} catch (NumberFormatException e) {
+					list = returnMap.get(entry.getValue());
+					if (list == null) {
+						list = new ArrayList<String>();
+						returnMap.put(entry.getValue(), list);
+						list.add(entry.getKey());
+					} else {
+						if (!list.contains(entry.getKey())) {
+							list.add(entry.getKey());
+						}
+					}
+				}
+			}
+		}
+
+		inverseMap = returnMap;
+		tableViewer.setInput(inverseMap.entrySet());
+		for (TableColumn column : table.getColumns()) {
+			column.pack();
+		}
+	}
+
+	public void replaceCheckedMessages(List<String> messages) {
+		Object[] checkedEntriesArray = checkboxTableViewer.getCheckedElements();
+		Map.Entry<String, String> entry;
+		for (Object o : checkedEntriesArray) {
+			if (o instanceof Map.Entry<?, ?>) {
+				entry = (Map.Entry<String, String>) o;
+				messages.set(messages.indexOf(entry.getKey()), entry.getValue());
+			} else {
+				throw new RuntimeException("object class is: " + o.getClass());
+			}
+		}
+	}
+
 	@Override
 	protected void nextPressed() {
-		// TODO Auto-generated method stub
+		replaceCheckedMessages(TestingFrame.messages);
 
+		Composite parent = getParent();
+		this.dispose();
+
+		SourceDataComposite sdc = new SourceDataComposite(parent, SWT.NONE);
+		sdc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		sdc.setInput(TestingFrame.messages);
 	}
 
 }

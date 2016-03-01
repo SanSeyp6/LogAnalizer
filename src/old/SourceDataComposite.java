@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.json.simple.parser.ParseException;
 
-import main.ReadJsonLogFile;
+import util.ReadJsonLogFile;
 import util.Util;
 
 public class SourceDataComposite extends Composite {

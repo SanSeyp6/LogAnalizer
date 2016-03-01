@@ -23,8 +23,8 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.json.simple.parser.ParseException;
 
-import main.ReadJsonLogFile;
 import main.TestingFrame;
+import util.ReadJsonLogFile;
 import util.Util;
 
 public class SourceDataComposite extends GeneralComposite {
@@ -88,7 +88,6 @@ public class SourceDataComposite extends GeneralComposite {
 						ReadJsonLogFile.readJsonLogFile(fileName);
 						messages = ReadJsonLogFile.getMessages();
 						setInput(messages);
-						nextButton.setEnabled(true);
 					} catch (IOException e1) {
 						e1.printStackTrace();
 						MessageDialog.openError(getShell(), "Error opening file", Util.getStackTrace(e1));
@@ -114,7 +113,6 @@ public class SourceDataComposite extends GeneralComposite {
 						System.out.println(fileName);
 						messages = Files.readAllLines(Paths.get(fileName));
 						setInput(messages);
-						nextButton.setEnabled(true);
 					} catch (IOException e1) {
 						e1.printStackTrace();
 						MessageDialog.openError(getShell(), "Error opening file", Util.getStackTrace(e1));
@@ -132,6 +130,7 @@ public class SourceDataComposite extends GeneralComposite {
 	public void setInput(List<String> list) {
 		messages = list;
 		listViewer.setInput(list);
+		nextButton.setEnabled(true);
 	}
 
 	@Override
@@ -150,8 +149,6 @@ public class SourceDataComposite extends GeneralComposite {
 		smc.setInput(Arrays.asList(new String[]{"one", "two","three"}));
 		smc.setMessages(messages);
 		smc.setPlaceholdersRoot(TestingFrame.placeholdersRoot);
-
-
 	}
 
 }

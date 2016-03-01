@@ -29,8 +29,6 @@ import org.eclipse.swt.widgets.MenuItem;
 
 import composites.ParseMessagesComposite.Entry;
 import composites.SimilarMessagesComposite.TreeNode;
-import main.AddTemplateDialog;
-import main.EditTemplateDialog;
 import main.TestingFrame;
 import util.Util;
 
