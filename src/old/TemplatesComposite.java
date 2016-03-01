@@ -1,4 +1,4 @@
-package main;
+package old;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -24,7 +24,8 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
-import composites.SourceDataComposite;
+import main.AddTemplateDialog;
+import main.EditTemplateDialog;
 import util.Util;
 
 
@@ -122,7 +123,7 @@ public class TemplatesComposite extends Composite {
 		mntmSaveTemplates.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				FileDialog fd = new FileDialog(getShell());
+				FileDialog fd = new FileDialog(getShell(), SWT.SAVE);
 				String fileName = fd.open();
 				if (fileName != null) {
 					try {

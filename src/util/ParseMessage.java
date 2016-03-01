@@ -1,4 +1,4 @@
-package main;
+package util;
 
 
 import java.io.ObjectInputStream.GetField;
@@ -10,8 +10,6 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import util.StringComparison;
 
 public class ParseMessage {
 

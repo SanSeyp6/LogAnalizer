@@ -1,34 +1,31 @@
-package main;
-import java.util.ArrayList;
+package composites;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.eclipse.swt.widgets.Composite;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.CheckboxTableViewer;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.TableColumn;
 
-import composites.ParseMessagesComposite;
 import util.ParseMessage;
 
-import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jface.viewers.CheckboxTableViewer;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-
-public class InverseReplacementComposite extends Composite {
+public class InverseReplacementComposite extends GeneralComposite {
 	private Map<String, List<String>> inverseMap;
 	private Map<String, String> replacements;
 	private TableViewer tableViewer;
@@ -38,61 +35,63 @@ public class InverseReplacementComposite extends Composite {
 
 	public InverseReplacementComposite(Composite parent, int style) {
 		super(parent, style);
-		setLayout(new FillLayout(SWT.HORIZONTAL));
-		
-		TabFolder tabFolder = new TabFolder(this, SWT.NONE);
-		
+	}
+
+	@Override
+	protected void createContent(Composite content, int style) {
+		content.setLayout(new FillLayout(SWT.HORIZONTAL));
+
+		TabFolder tabFolder = new TabFolder(content, SWT.NONE);
+
 		TabItem tbtmInversemap = new TabItem(tabFolder, SWT.NONE);
 		tbtmInversemap.setText("Inverse Map");
-		
+
 		tableViewer = new TableViewer(tabFolder, SWT.BORDER | SWT.FULL_SELECTION);
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		table = tableViewer.getTable();
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		tbtmInversemap.setControl(table);
-		
+
 		TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
 		TableColumn tblclmnValue = tableViewerColumn.getColumn();
 		tblclmnValue.setWidth(100);
 		tblclmnValue.setText("Value");
-		tableViewerColumn.setLabelProvider(new ColumnLabelProvider(){
+		tableViewerColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				if(element instanceof Map.Entry<?, ?>){
-					Map.Entry<String, List<String>> entry=(Entry<String, List<String>>) element;
-					return entry.getKey(); 
-				} else{
+				if (element instanceof Map.Entry<?, ?>) {
+					Map.Entry<String, List<String>> entry = (Entry<String, List<String>>) element;
+					return entry.getKey();
+				} else {
 					return super.getText(element);
-				} 
-					
+				}
 			}
 		});
-		
+
 		TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(tableViewer, SWT.NONE);
 		TableColumn tblclmnAttributes = tableViewerColumn_1.getColumn();
 		tblclmnAttributes.setWidth(100);
 		tblclmnAttributes.setText("Attributes");
-		tableViewerColumn_1.setLabelProvider(new ColumnLabelProvider(){
+		tableViewerColumn_1.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				if(element instanceof Map.Entry<?, ?>){
-					Map.Entry<String, List<String>> entry=(Entry<String, List<String>>) element;
-					return entry.getValue().toString(); 
-				} else{
+				if (element instanceof Map.Entry<?, ?>) {
+					Map.Entry<String, List<String>> entry = (Entry<String, List<String>>) element;
+					return entry.getValue().toString();
+				} else {
 					return super.getText(element);
-				} 
-					
+				}
 			}
 		});
-		
+
 		TabItem tbtmCheckReplacedValues_1 = new TabItem(tabFolder, SWT.NONE);
 		tbtmCheckReplacedValues_1.setText("Check Replaced Values");
-		
+
 		Composite composite = new Composite(tabFolder, SWT.NONE);
 		tbtmCheckReplacedValues_1.setControl(composite);
 		composite.setLayout(new GridLayout(2, false));
-		
+
 		checkboxTableViewer = CheckboxTableViewer.newCheckList(composite, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI);
 		checkboxTableViewer.setAllChecked(false);
 		checkboxTableViewer.setContentProvider(ArrayContentProvider.getInstance());
@@ -101,61 +100,56 @@ public class InverseReplacementComposite extends Composite {
 		table_2.setSize(444, 265);
 		table_2.setLinesVisible(true);
 		table_2.setHeaderVisible(true);
-		
+
 		TableViewerColumn tableViewerColumn_5 = new TableViewerColumn(checkboxTableViewer, SWT.NONE);
 		TableColumn tblclmnBeforeReplacement_1 = tableViewerColumn_5.getColumn();
 		tblclmnBeforeReplacement_1.setWidth(100);
 		tblclmnBeforeReplacement_1.setText("Before Replacement");
-		tableViewerColumn_5.setLabelProvider(new ColumnLabelProvider(){
+		tableViewerColumn_5.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				if(element instanceof Map.Entry<?, ?>){
+				if (element instanceof Map.Entry<?, ?>) {
 					Map.Entry<String, String> entry = (Entry<String, String>) element;
 					return entry.getKey();
 				}
-				
 				return super.getText(element);
 			}
 		});
-		
-				
-				TableViewerColumn tableViewerColumn_6 = new TableViewerColumn(checkboxTableViewer, SWT.NONE);
-				TableColumn tblclmnAfterReplacement_1 = tableViewerColumn_6.getColumn();
-				tblclmnAfterReplacement_1.setWidth(100);
-				tblclmnAfterReplacement_1.setText("After Replacement");
-				tableViewerColumn_6.setLabelProvider(new ColumnLabelProvider(){
-					@Override
-					public String getText(Object element) {
-						if(element instanceof Map.Entry<?, ?>){
-							Map.Entry<String, String> entry = (Entry<String, String>) element;
-							return entry.getValue();
-						}
-						
-						return super.getText(element);
-					}
-				});
-				
-				Button btnNewButton = new Button(composite, SWT.NONE);
-				btnNewButton.addSelectionListener(new SelectionAdapter() {
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						checkboxTableViewer.setAllChecked(true);
-					}
-				});
-				btnNewButton.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, false, true, 1, 1));
-				btnNewButton.setText("Check All");
-				
-				Button btnUncheckAll = new Button(composite, SWT.NONE);
-				btnUncheckAll.addSelectionListener(new SelectionAdapter() {
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						checkboxTableViewer.setAllChecked(false);
-					}
-				});
-				btnUncheckAll.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-				btnUncheckAll.setText("Uncheck All");
 
-		
+		TableViewerColumn tableViewerColumn_6 = new TableViewerColumn(checkboxTableViewer, SWT.NONE);
+		TableColumn tblclmnAfterReplacement_1 = tableViewerColumn_6.getColumn();
+		tblclmnAfterReplacement_1.setWidth(100);
+		tblclmnAfterReplacement_1.setText("After Replacement");
+		tableViewerColumn_6.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				if (element instanceof Map.Entry<?, ?>) {
+					Map.Entry<String, String> entry = (Entry<String, String>) element;
+					return entry.getValue();
+				}
+				return super.getText(element);
+			}
+		});
+
+		Button btnNewButton = new Button(composite, SWT.NONE);
+		btnNewButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false, 1, 1));
+		btnNewButton.setText("Check All");
+		btnNewButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				checkboxTableViewer.setAllChecked(true);
+			}
+		});
+
+		Button btnUncheckAll = new Button(composite, SWT.NONE);
+		btnUncheckAll.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, true, 1, 1));
+		btnUncheckAll.setText("Uncheck All");
+		btnUncheckAll.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				checkboxTableViewer.setAllChecked(false);
+			}
+		});
 	}
 
 	public void replaceValuesWithNames(List<String> messages) {
@@ -203,46 +197,11 @@ public class InverseReplacementComposite extends Composite {
 		checkboxTableViewer.setInput(replacements.entrySet());
 	}
 
-	public void buildInverseMap(List<ParseMessagesComposite.Entry> entries) {
-		Map<String, List<String>> returnMap = new HashMap<String, List<String>>();
-		Map<String, String> valuesMap;
-		List<String> list;
-
-		for (ParseMessagesComposite.Entry pEntry : entries) {
-			valuesMap = pEntry.getParsedValues();
-			for (Entry<String, String> entry : valuesMap.entrySet()) {
-				// TODO надо найти нормальный способ проверки, что
-				// строка является числом.
-				try {
-					Integer.parseInt(entry.getKey());
-				} catch (NumberFormatException e) {
-					list = returnMap.get(entry.getValue());
-					if (list == null) {
-						list = new ArrayList<String>();
-						returnMap.put(entry.getValue(), list);
-						list.add(entry.getKey());
-					} else {
-						if (!list.contains(entry.getKey())) {
-							list.add(entry.getKey());
-						}
-					}
-				}			}
-		}
-
-		inverseMap = returnMap;
-		tableViewer.setInput(inverseMap.entrySet());
-	}
 	
-	public void replaceCheckedMessages(List<String> messages){
-		Object[] checkedEntriesArray = checkboxTableViewer.getCheckedElements();
-		Map.Entry<String,String> entry;
-		for(Object o: checkedEntriesArray){
-			if(o instanceof Map.Entry<?,?>){
-				entry=(Map.Entry<String,String>) o;
-				messages.set(messages.indexOf(entry.getKey()), entry.getValue());
-			} else {
-				throw new RuntimeException("object class is: "+o.getClass());
-			}
-		}
+	@Override
+	protected void nextPressed() {
+		// TODO Auto-generated method stub
+
 	}
+
 }

@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import main.ParseMessage;
-import main.ParseMessagesComposite;
-import main.ParseMessagesComposite.Entry;
 import main.ReadJsonLogFile;
+import old.ParseMessagesComposite;
+import old.ParseMessagesComposite.Entry;
+import util.ParseMessage;
 
 import org.json.simple.parser.ParseException;
 

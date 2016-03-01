@@ -22,7 +22,6 @@ public abstract class GeneralComposite extends Composite {
 		createMainMenuBar();
 		content = new Composite(this, SWT.NONE);
 		content.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		createContent(content, SWT.NONE);
 
 		nextButton = new Button(this, SWT.NONE);
 		nextButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -34,6 +33,9 @@ public abstract class GeneralComposite extends Composite {
 				nextPressed();
 			}
 		});
+
+		// Делаем это в конце, чтобы nextButton был доступен и разметка была правильной - всё на content
+		createContent(content, SWT.NONE);
 	}
 
 	abstract protected void createContent(Composite content, int style);

@@ -1,7 +1,9 @@
 package composites;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -14,6 +16,7 @@ import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Menu;
@@ -21,28 +24,25 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.json.simple.parser.ParseException;
 
 import main.ReadJsonLogFile;
+import main.TestingFrame;
 import util.Util;
 
-public class SourceDataComposite extends Composite {
-	private ListViewer listViewer;
-	private List<String> messages;
+public class SourceDataComposite extends GeneralComposite {
 	private MenuItem fileMenuItem;
 	private Menu fileMenu;
-	private Menu mainMenuBar;
 	private MenuItem mntmOpenDataFile;
 	private MenuItem openMessagesFlatMenuItem;
-	
+	private ListViewer listViewer;
+	private List<String> messages;
+
 	public SourceDataComposite(Composite parent, int style) {
 		super(parent, style);
-		setLayout(new FillLayout(SWT.HORIZONTAL));
-		
-		mainMenuBar = getShell().getMenuBar();
-		if (mainMenuBar == null){
-			mainMenuBar = new Menu(getShell(), SWT.BAR);
-			getShell().setMenuBar(mainMenuBar);
-			//throw new RuntimeException("Main menu bar is not set for current window/shell!");
-		}
-		
+	}
+
+	@Override
+	protected void createContent(Composite content, int style) {
+		content.setLayout(new FillLayout(SWT.HORIZONTAL));
+
 		fileMenuItem = new MenuItem(mainMenuBar, SWT.CASCADE);
 		fileMenuItem.setText("File");
 		fileMenu = new Menu(fileMenuItem);
@@ -51,27 +51,28 @@ public class SourceDataComposite extends Composite {
 		addOpenJsonDataFileMenuItem(fileMenu);
 		addOpenFlatDataFileMenuItem(fileMenu);
 
-		listViewer = new ListViewer(this, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		listViewer = new ListViewer(content, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		listViewer.setContentProvider(ArrayContentProvider.getInstance());
 		listViewer.setLabelProvider(new ColumnLabelProvider());
 		
 		this.addDisposeListener(new DisposeListener() {
-			
+
 			@Override
 			public void widgetDisposed(DisposeEvent arg0) {
-				if(mntmOpenDataFile !=null){
+				if (mntmOpenDataFile != null) {
 					mntmOpenDataFile.dispose();
 				}
-				if(openMessagesFlatMenuItem !=null){
+				if (openMessagesFlatMenuItem != null) {
 					openMessagesFlatMenuItem.dispose();
+				}
+				if (fileMenuItem != null){
+					if(fileMenu != null){
+						fileMenu.dispose();
+					}
+					fileMenuItem.dispose();
 				}
 			}
 		});
-	}
-
-	public void setInput(List<String> list) {
-		messages = list;
-		listViewer.setInput(list);
 	}
 
 	private void addOpenJsonDataFileMenuItem(Menu menu) {
@@ -86,8 +87,8 @@ public class SourceDataComposite extends Composite {
 						System.out.println(fileName);
 						ReadJsonLogFile.readJsonLogFile(fileName);
 						messages = ReadJsonLogFile.getMessages();
-						//messages=removeDuplicatesFromStringList(messages);
 						setInput(messages);
+						nextButton.setEnabled(true);
 					} catch (IOException e1) {
 						e1.printStackTrace();
 						MessageDialog.openError(getShell(), "Error opening file", Util.getStackTrace(e1));
@@ -111,8 +112,9 @@ public class SourceDataComposite extends Composite {
 				if (fileName != null) {
 					try {
 						System.out.println(fileName);
-						messages=Files.readAllLines(Paths.get(fileName));
+						messages = Files.readAllLines(Paths.get(fileName));
 						setInput(messages);
+						nextButton.setEnabled(true);
 					} catch (IOException e1) {
 						e1.printStackTrace();
 						MessageDialog.openError(getShell(), "Error opening file", Util.getStackTrace(e1));
@@ -126,4 +128,30 @@ public class SourceDataComposite extends Composite {
 	public List<String> getMessages() {
 		return messages;
 	}
+
+	public void setInput(List<String> list) {
+		messages = list;
+		listViewer.setInput(list);
+	}
+
+	@Override
+	protected void nextPressed() {
+		if(messages == null){
+			throw new IllegalStateException("messages in null");
+		}
+		messages=Util.removeDuplicatesFromStringList(messages);
+		TestingFrame.messages=messages;
+		
+		Composite parent = getParent();
+		this.dispose();
+		
+		SimilarMessagesComposite smc=new SimilarMessagesComposite(parent, SWT.NONE);
+		smc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		smc.setInput(Arrays.asList(new String[]{"one", "two","three"}));
+		smc.setMessages(messages);
+		smc.setPlaceholdersRoot(TestingFrame.placeholdersRoot);
+
+
+	}
+
 }

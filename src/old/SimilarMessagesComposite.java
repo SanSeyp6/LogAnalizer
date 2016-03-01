@@ -1,4 +1,4 @@
-package main;
+package old;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 
+import util.Metrics;
 import util.StringComparison;
 
 public class SimilarMessagesComposite extends Composite {

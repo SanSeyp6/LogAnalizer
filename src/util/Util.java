@@ -7,8 +7,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import main.ParseMessage;
-import main.SimilarMessagesComposite.TreeNode;
+import composites.SimilarMessagesComposite.TreeNode;
+
 
 /**
  * Тут хранятся вспомогательные статические методы

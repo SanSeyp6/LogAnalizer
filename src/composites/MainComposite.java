@@ -10,8 +10,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
-import main.ParseMessagesComposite;
-import main.SimilarMessagesComposite.TreeNode;
+import old.ParseMessagesComposite;
+import old.SourceDataComposite;
+import old.SimilarMessagesComposite.TreeNode;
 
 public class MainComposite extends Composite{
 

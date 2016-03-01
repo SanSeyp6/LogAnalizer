@@ -1,4 +1,4 @@
-package main;
+package old;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +17,7 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.TableColumn;
 
-import composites.ParseMessagesComposite;
+import old.ParseMessagesComposite;
 import util.ParseMessage;
 
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -226,7 +226,8 @@ public class InverseReplacementComposite extends Composite {
 							list.add(entry.getKey());
 						}
 					}
-				}			}
+				}
+			}
 		}
 
 		inverseMap = returnMap;

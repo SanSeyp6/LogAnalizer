@@ -1,7 +1,4 @@
-package main;
-import util.StringComparison;
-
-
+package util;
 
 public class Metrics {
 

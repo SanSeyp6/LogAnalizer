@@ -1,16 +1,27 @@
 package main;
+import java.util.List;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
 
-import composites.SourceDataComposite2;
+import composites.SourceDataComposite;
+import composites.ParseMessagesComposite;
+import composites.SimilarMessagesComposite;
+import composites.SimilarMessagesComposite.TreeNode;
 
 public class TestingFrame {
 	private final Display display;
 	private final Shell shell;
 	private final Menu mainMenu;
+	
+	////////////
+	public static List<String> messages;
+	public static List<String> templates;
+	public static List<ParseMessagesComposite.Entry> entries;
+	public static SimilarMessagesComposite.TreeNode placeholdersRoot = new TreeNode("placeholdersRoot");
 	
 	public TestingFrame() {
 		display = new Display();
@@ -45,7 +56,7 @@ public class TestingFrame {
 		// use this to quickly test Composites
 		//new YourComposite(tf.getShell(), SWT.NONE);
 		
-		new SourceDataComposite2(tf.getShell(), SWT.NONE);
+		new SourceDataComposite(tf.getShell(), SWT.NONE);
 
 		// runs testing frame
 		tf.run();
