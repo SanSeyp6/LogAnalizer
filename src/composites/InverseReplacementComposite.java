@@ -221,6 +221,13 @@ public class InverseReplacementComposite extends GeneralComposite {
 					Integer.parseInt(entry.getKey());
 				} catch (NumberFormatException e) {
 					list = returnMap.get(entry.getValue());
+					
+					// тут случилось, что пустые значения добавляются в placeholdersRoot и подставляются в обратной замене
+					if(entry.getValue().isEmpty()){
+						System.out.println("entry.getValue() is \"\"");
+						continue;
+					}
+					
 					if (list == null) {
 						list = new ArrayList<String>();
 						returnMap.put(entry.getValue(), list);

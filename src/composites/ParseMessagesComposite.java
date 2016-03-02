@@ -132,7 +132,6 @@ public class ParseMessagesComposite extends GeneralComposite {
 			for(String template: templates){
 				map = ParseMessage.parseMessageAgainstTemplate(message, template);
 				if (!map.isEmpty()) {
-					System.out.println(map);
 					parsed=true;
 					entry=new Entry(message, template, map);
 					returnList.add(entry);
