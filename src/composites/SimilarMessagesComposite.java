@@ -2,6 +2,7 @@ package composites;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -12,6 +13,7 @@ import java.util.regex.Pattern;
 
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.jface.databinding.viewers.ViewerSupport;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ListViewer;
@@ -19,6 +21,8 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -28,13 +32,17 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
+import org.json.simple.parser.ParseException;
 
 import main.TestingFrame;
 import util.Metrics;
 import util.StringComparison;
+import util.Util;
 
 public class SimilarMessagesComposite extends GeneralComposite {
 	public static final int METRIC_THRESHOLD = 20;
@@ -48,6 +56,8 @@ public class SimilarMessagesComposite extends GeneralComposite {
 	private Text userTemplateText;
 	private List<String> templates;
 	private TreeNode placeholdersRoot;
+	private MenuItem savePlaceholdersRootMenuItem;
+	private MenuItem loadPlaceholdersRootMenuItem;
 
 	
 	public SimilarMessagesComposite(Composite parent, int style) {
@@ -57,7 +67,45 @@ public class SimilarMessagesComposite extends GeneralComposite {
 	@Override
 	protected void createContent(Composite content, int style) {
 		content.setLayout(new FillLayout(SWT.HORIZONTAL));
+		
+		savePlaceholdersRootMenuItem = new MenuItem(mainMenuBar, SWT.NONE);
+		savePlaceholdersRootMenuItem.setText("Save placeholders");
+		savePlaceholdersRootMenuItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				FileDialog fd = new FileDialog(getShell(), SWT.SAVE);
+				String fileName = fd.open();
+				if (fileName != null) {
+					try {
+						System.out.println(fileName);
+						Util.savePlaceholdersRootToFile(placeholdersRoot, fileName);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+						MessageDialog.openError(getShell(), "Error opening file", Util.getStackTrace(e1));
+					}
+				}
+			}
+		});
 
+		loadPlaceholdersRootMenuItem = new MenuItem(mainMenuBar, SWT.NONE);
+		loadPlaceholdersRootMenuItem.setText("Load placeholders");
+		loadPlaceholdersRootMenuItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				FileDialog fd = new FileDialog(getShell());
+				String fileName = fd.open();
+				if (fileName != null) {
+					try {
+						System.out.println(fileName);
+						Util.readPlaceholdersToRoot(placeholdersRoot, fileName);
+					} catch (IOException | ParseException e1) {
+						e1.printStackTrace();
+						MessageDialog.openError(getShell(), "Error opening file", Util.getStackTrace(e1));
+					}
+				}
+			}
+		});
+		
 		SashForm sashForm = new SashForm(content, SWT.NONE);
 
 		Composite composite = new Composite(sashForm, SWT.BORDER);
@@ -154,6 +202,18 @@ public class SimilarMessagesComposite extends GeneralComposite {
 		});
 
 		sashForm.setWeights(new int[] { 3, 1 });
+		
+		addDisposeListener(new DisposeListener() {
+			@Override
+			public void widgetDisposed(DisposeEvent e) {
+				if(savePlaceholdersRootMenuItem != null){
+					savePlaceholdersRootMenuItem.dispose();
+				}
+				if(loadPlaceholdersRootMenuItem != null){
+					loadPlaceholdersRootMenuItem.dispose();
+				}
+			}
+		});
 	}
 
 	public void setMessages(java.util.List<String> messages) {
@@ -176,6 +236,7 @@ public class SimilarMessagesComposite extends GeneralComposite {
 		TemplatesComposite tc=new TemplatesComposite(parent, SWT.NONE);
 		tc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		tc.setInput(TestingFrame.templates);
+		parent.layout(); // SWT caches layout, so we clear that cache in this way
 	}
 
 	public TreeNode getPlaceholdersRoot() {

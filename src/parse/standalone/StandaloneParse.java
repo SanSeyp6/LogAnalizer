@@ -13,7 +13,7 @@ import java.util.Set;
 import old.ParseMessagesComposite;
 import old.ParseMessagesComposite.Entry;
 import util.ParseMessage;
-import util.ReadJsonLogFile;
+import util.JsonReadWriteUtils;
 
 import org.json.simple.parser.ParseException;
 
@@ -75,8 +75,8 @@ public class StandaloneParse {
 		
 		
 		try {
-			ReadJsonLogFile.readJsonLogFile(messagesFileName);
-			messages = ReadJsonLogFile.getMessages();
+			JsonReadWriteUtils.readJsonLogFile(messagesFileName);
+			messages = JsonReadWriteUtils.getMessages();
 			templates = Files.readAllLines(Paths.get(templatesFileName));
 			
 			StandaloneParse sp = new StandaloneParse();

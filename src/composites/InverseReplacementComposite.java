@@ -262,6 +262,7 @@ public class InverseReplacementComposite extends GeneralComposite {
 		SourceDataComposite sdc = new SourceDataComposite(parent, SWT.NONE);
 		sdc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		sdc.setInput(TestingFrame.messages);
+		parent.layout(); // SWT caches layout, so we clear that cache in this way
 	}
 
 }

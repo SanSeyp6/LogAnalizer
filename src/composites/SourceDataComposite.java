@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.json.simple.parser.ParseException;
 
 import main.TestingFrame;
-import util.ReadJsonLogFile;
+import util.JsonReadWriteUtils;
 import util.Util;
 
 public class SourceDataComposite extends GeneralComposite {
@@ -85,8 +85,8 @@ public class SourceDataComposite extends GeneralComposite {
 				if (fileName != null) {
 					try {
 						System.out.println(fileName);
-						ReadJsonLogFile.readJsonLogFile(fileName);
-						messages = ReadJsonLogFile.getMessages();
+						JsonReadWriteUtils.readJsonLogFile(fileName);
+						messages = JsonReadWriteUtils.getMessages();
 						setInput(messages);
 					} catch (IOException e1) {
 						e1.printStackTrace();
@@ -149,6 +149,7 @@ public class SourceDataComposite extends GeneralComposite {
 		smc.setInput(Arrays.asList(new String[]{"one", "two","three"}));
 		smc.setMessages(messages);
 		smc.setPlaceholdersRoot(TestingFrame.placeholdersRoot);
+		parent.layout(); // SWT caches layout, so we clear that cache in this way
 	}
 
 }

@@ -1,5 +1,6 @@
 package util;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -7,37 +8,46 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import composites.SimilarMessagesComposite.TreeNode;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 
+import composites.SimilarMessagesComposite.TreeNode;
 
 /**
  * Тут хранятся вспомогательные статические методы
+ * 
  * @author aaovchinnikov
  *
  */
 public class Util {
 	/**
-	 * Находит все именованные placeholder-ы и заносит их в дерево placeholder-ов
+	 * Находит все именованные placeholder-ы и заносит их в дерево
+	 * placeholder-ов
+	 * 
 	 * @param templates
 	 * @param placeholdersRoot
 	 */
 	public static void computePlaceholders(List<String> templates, TreeNode placeholdersRoot) {
 		List<String> placeholders;
-		for(String template: templates){
+		for (String template : templates) {
 			placeholders = ParseMessage.getPlaceholders(template);
-			for(String placeholder: placeholders){
-				try{
-					Integer.parseInt(placeholder);	
-				} catch (NumberFormatException e){
-					placeholdersRoot.addChild(new TreeNode(placeholder));	
+			for (String placeholder : placeholders) {
+				try {
+					Integer.parseInt(placeholder);
+				} catch (NumberFormatException e) {
+					placeholdersRoot.addChild(new TreeNode(placeholder));
 				}
 			}
 		}
 	}
 
 	/**
-	 * Преобразует вывод метода {@link Exception#getStackTrace()} в строку для дальнейшего использования
-	 * @param ex исключение, вывод которого необходимо получить как строку
+	 * Преобразует вывод метода {@link Exception#getStackTrace()} в строку для
+	 * дальнейшего использования
+	 * 
+	 * @param ex
+	 *            исключение, вывод которого необходимо получить как строку
 	 * @return строка, содержащая вывод метода {@link Exception#getStackTrace()}
 	 */
 	public static String getStackTrace(Exception ex) {
@@ -51,7 +61,8 @@ public class Util {
 	 * новый список строк без дублирующихся элементов. Исходный порядок
 	 * элементов в возвращаемом списке сохраняется
 	 * 
-	 * @param list передаваемый список для удаления дублирующихся элементов
+	 * @param list
+	 *            передаваемый список для удаления дублирующихся элементов
 	 * @return список без дублирующихся элементов
 	 */
 	public static List<String> removeDuplicatesFromStringList(List<String> list) {
@@ -59,4 +70,64 @@ public class Util {
 		return new ArrayList<String>(set);
 	}
 
+	/**
+	 * Сохраняет перечень плейсхолдеров и значений в JSON-файле с указанным
+	 * именем
+	 * 
+	 * @param placeholdersRoot
+	 * @param fileName
+	 * @throws IOException
+	 */
+	public static void savePlaceholdersRootToFile(TreeNode placeholdersRoot, String fileName) throws IOException {
+		JSONArray jsonArray = convertPlaceholdersRootToJsonArray(placeholdersRoot);
+
+		JsonReadWriteUtils.saveJsonArrayToFile(jsonArray, fileName);
+	}
+
+	/**
+	 * Преобразует placeholdersRoot в JSON-массив со структурой [{placeholder:
+	 * "placeholdervalue", values: ["values"]}]
+	 * 
+	 * @param placeholdersRoot
+	 * @return
+	 */
+	private static JSONArray convertPlaceholdersRootToJsonArray(TreeNode placeholdersRoot) {
+		JSONArray jsonArray = new JSONArray();
+		JSONArray valuesArray;
+		JSONObject jsonObject;
+		for (TreeNode placeholderNode : placeholdersRoot.getChildren()) {
+			valuesArray = new JSONArray();
+			for (TreeNode valueNode : placeholderNode.getChildren()) {
+				valuesArray.add(valueNode.getText());
+			}
+
+			jsonObject = new JSONObject();
+			jsonObject.put("placeholder", placeholderNode.getText());
+			jsonObject.put("values", valuesArray);
+
+			jsonArray.add(jsonObject);
+		}
+
+		return jsonArray;
+	}
+
+	public static void readPlaceholdersToRoot(TreeNode placeholdersRoot, String fileName)
+			throws IOException, ParseException {
+		JSONArray jsonArray = JsonReadWriteUtils.readJsonArrayFromFile(fileName);
+		JSONArray valuesArray;
+		JSONObject jsonObject;
+		TreeNode placeholderNode, valueNode;
+
+		for (Object o : jsonArray) {
+			jsonObject = (JSONObject) o;
+			placeholderNode = new TreeNode((String)jsonObject.get("placeholder"));
+			valuesArray = (JSONArray) jsonObject.get("values");
+			for(Object o2: valuesArray){
+				valueNode = new TreeNode((String)o2);
+				placeholderNode.addChild(valueNode);
+			}
+			placeholdersRoot.addChild(placeholderNode);
+		}
+	}
+	
 }

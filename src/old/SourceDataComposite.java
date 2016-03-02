@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.json.simple.parser.ParseException;
 
-import util.ReadJsonLogFile;
+import util.JsonReadWriteUtils;
 import util.Util;
 
 public class SourceDataComposite extends Composite {
@@ -84,8 +84,8 @@ public class SourceDataComposite extends Composite {
 				if (fileName != null) {
 					try {
 						System.out.println(fileName);
-						ReadJsonLogFile.readJsonLogFile(fileName);
-						messages = ReadJsonLogFile.getMessages();
+						JsonReadWriteUtils.readJsonLogFile(fileName);
+						messages = JsonReadWriteUtils.getMessages();
 						//messages=removeDuplicatesFromStringList(messages);
 						setInput(messages);
 					} catch (IOException e1) {

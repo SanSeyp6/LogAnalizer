@@ -1,7 +1,9 @@
 package util;
 
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,10 +14,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-public class ReadJsonLogFile {
+public class JsonReadWriteUtils {
 
 	private static JSONArray jsonArray = new JSONArray();
-	private static JSONParser jsonParser;
+	private static JSONParser jsonParser = new JSONParser();
 	private static boolean fileRead = false;
 
 	/**
@@ -29,14 +31,14 @@ public class ReadJsonLogFile {
 	 */
 	public static void readJsonLogFile(String path) throws IOException, ParseException {
 		FileReader fr = new FileReader(path);
-		jsonParser = new JSONParser();
 		jsonArray = (JSONArray) jsonParser.parse(fr);
 		fileRead = true;
+		fr.close();
 	}
 
 	/**
 	 * Возвращает список строк из поля msg Syslog-сообщений из файла,
-	 * прочитанного {@link ReadJsonLogFile#readJsonLogFile(String)}
+	 * прочитанного {@link JsonReadWriteUtils#readJsonLogFile(String)}
 	 * 
 	 * @param file
 	 * @param amount
@@ -68,5 +70,33 @@ public class ReadJsonLogFile {
 	 */
 	public static JSONArray getJsonArray() {
 		return jsonArray;
+	}
+	
+	/**
+	 * Сохраняет переданный JSON-массив в указанный файл
+	 * @param jsonArray
+	 * @param fileName
+	 * @throws IOException 
+	 */
+	public static void saveJsonArrayToFile(JSONArray jsonArray, String fileName) throws IOException{
+		FileWriter fw = new FileWriter(fileName);
+		fw.write(jsonArray.toJSONString());
+		fw.flush();
+		fw.close();
+	}
+	
+	/**
+	 * Считывает переданный файл, содержащий JSON-массив 
+	 * @param fileName
+	 * @return
+	 * @throws IOException
+	 * @throws ParseException
+	 */
+	public static JSONArray readJsonArrayFromFile(String fileName) throws IOException, ParseException{
+		FileReader fr = new FileReader(fileName);
+		JSONArray returnArray = (JSONArray) jsonParser.parse(fr);
+		fileRead = true;
+		fr.close();
+		return returnArray;
 	}
 }

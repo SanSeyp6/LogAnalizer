@@ -172,6 +172,7 @@ public class TemplatesComposite extends GeneralComposite {
 		TestingFrame.entries=pmc.parseMessages(TestingFrame.messages, templates);
 		pmc.setInput(TestingFrame.entries);
 		addValuesToPlaceholders(TestingFrame.entries, TestingFrame.placeholdersRoot);
+		parent.layout(); // SWT caches layout, so we clear that cache in this way
 	}
 	
 	private void addValuesToPlaceholders(List<Entry> entries, TreeNode placeholdersRoot) {
@@ -188,7 +189,6 @@ public class TemplatesComposite extends GeneralComposite {
 					}
 				}
 			}
-			
 		}
 	}
 
