@@ -14,6 +14,8 @@ import java.util.regex.Pattern;
 public class ParseMessage {
 
 	public static final Pattern SPECIAL_REGEX_CHARS = Pattern.compile("[{}()\\[\\].+*?^$\\\\|]");
+	private static final Pattern PLACEHOLDERS_REGEX = Pattern.compile("\\{\\w*\\}");
+
 
 	public static String escapeSpecialRegexChars(String str) {
 		return SPECIAL_REGEX_CHARS.matcher(str).replaceAll("\\\\$0");
@@ -64,34 +66,23 @@ public class ParseMessage {
 		}
 	}
 
-	/**
-	 * Преобразует строку полей вида "{fieldName1}{fieldName2}{fieldName2}..." к
-	 * списку [filedName1, filedName2, filedName3, ...]
-	 * 
-	 * @param placeholdersString
-	 * @return
-	 */
-	private static List<String> convertPlaceholdersStringToList(String placeholdersString) {
-		StringTokenizer st = new StringTokenizer(placeholdersString, "{}");
-		List<String> placeholders = new ArrayList<String>(st.countTokens());
-		String str;
-		while (st.hasMoreTokens()) {
-			str = st.nextToken();
-			placeholders.add(str);
-		}
-		return placeholders;
-	}
-
 	public static List<String> getPlaceholders(String template){
-		String pString = StringComparison.computeDiff(template, template.replaceAll("\\{\\w*\\}", ""));
-		if (pString.isEmpty()) {
-			return Collections.emptyList();
-		}
-		List<String> placeholders = convertPlaceholdersStringToList(pString);
-		if (placeholders.isEmpty()) {
-			return Collections.emptyList();
+		List<String> returnList = null;
+		Matcher matcher = PLACEHOLDERS_REGEX.matcher(template);
+		String group;
+		
+		while(matcher.find()){
+			if(returnList == null){
+				returnList = new ArrayList<String>();
+			}
+			group=matcher.group();
+			returnList.add(group.substring(1, group.length()-1)); //избавляемся от скобок
 		}
 		
-		return placeholders;
+		if(returnList == null){
+			return Collections.emptyList();
+		} else {
+			return returnList;
+		}
 	}
 }

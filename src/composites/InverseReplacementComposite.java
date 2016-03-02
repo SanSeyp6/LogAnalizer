@@ -11,6 +11,7 @@ import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -55,6 +56,7 @@ public class InverseReplacementComposite extends GeneralComposite {
 		checkboxTableViewer = CheckboxTableViewer.newCheckList(composite, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI);
 		checkboxTableViewer.setAllChecked(false);
 		checkboxTableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		checkboxTableViewer.setComparator(new ViewerComparator()); //By default, it will sort based on the toString() 
 		table_2 = checkboxTableViewer.getTable();
 		table_2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2));
 		table_2.setSize(444, 265);
@@ -262,7 +264,6 @@ public class InverseReplacementComposite extends GeneralComposite {
 		SourceDataComposite sdc = new SourceDataComposite(parent, SWT.NONE);
 		sdc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		sdc.setInput(TestingFrame.messages);
-		parent.layout(); // SWT caches layout, so we clear that cache in this way
 	}
 
 }

@@ -139,7 +139,7 @@ public class TemplatesComposite extends GeneralComposite {
 					try {
 						System.out.println(fileName);
 						Collections.sort(templates);
-						Files.write(Paths.get(fileName), templates, StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+						Files.write(Paths.get(fileName), templates, StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
 					} catch (IOException e1) {
 						e1.printStackTrace();
 						MessageDialog.openError(getShell(), "Error opening file", Util.getStackTrace(e1));
