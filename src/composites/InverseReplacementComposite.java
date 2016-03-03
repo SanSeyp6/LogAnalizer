@@ -269,9 +269,6 @@ public class InverseReplacementComposite extends GeneralComposite {
 		Object[] checkedEntriesArray = checkboxTableViewer.getCheckedElements();
 		Map.Entry<String, String> entry;
 		for (Object o : checkedEntriesArray) {
-			System.out.println(o);
-			
-			
 			if (o instanceof Map.Entry<?, ?>) {
 				entry = (Map.Entry<String, String>) o;
 				messages.set(messages.indexOf(entry.getKey()), entry.getValue());

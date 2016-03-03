@@ -1,9 +1,11 @@
 package composites;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -23,9 +25,9 @@ import util.ParseMessage;
 public class ParseMessagesComposite extends GeneralComposite {
 	private Table table;
 	private TableViewer tableViewer;
-	private int totalMessages;
-	private int parsedMessages;
-	private int unparsedMessages;
+	private int totalMessagesCount;
+	private int parsedMessagesCount;
+	private int unparsedMessagesCount;
 	private Label countersLabel;
 
 	public ParseMessagesComposite(Composite parent, int style) {
@@ -107,8 +109,8 @@ public class ParseMessagesComposite extends GeneralComposite {
 	}
 	
 	public void setInput(List<Entry> entries){
-		countersLabel.setText("Total messages processed: "+ totalMessages + 
-				"\nParsed messages: "+ parsedMessages + "\nUnparsed Messages: " + unparsedMessages);
+		countersLabel.setText("Total messages processed: "+ totalMessagesCount + 
+				"\nParsed messages: "+ parsedMessagesCount + "\nUnparsed Messages: " + unparsedMessagesCount);
 		tableViewer.setInput(entries);
 		for (TableColumn column : table.getColumns()){
 			column.pack();
@@ -117,19 +119,18 @@ public class ParseMessagesComposite extends GeneralComposite {
 
 	public List<Entry> parseMessages(List<String> messages, List<String> templates){
 		List<Entry> returnList=new ArrayList<ParseMessagesComposite.Entry>();
+		Map<String,String> messageTemplateMap = new HashMap<String,String>();
+		Set<String> unparsedMessages = new HashSet<String>();
 		Map<String, String> map;
 		Entry entry;
 		boolean parsed;
 
-		TestingFrame.unparsedMessages = new HashSet<String>();
-		TestingFrame.parsedMessages = new ArrayList<String>();
-		
 		/*
 		 * Запоминаем количество всех сообщений, разобранных и неразобранных
 		 */
-		totalMessages = messages.size();
-		parsedMessages=0;
-		unparsedMessages=0;
+		totalMessagesCount = messages.size();
+		parsedMessagesCount=0;
+		unparsedMessagesCount=0;
 		
 		for(String message: messages){
 			parsed=false;
@@ -137,21 +138,25 @@ public class ParseMessagesComposite extends GeneralComposite {
 				map = ParseMessage.parseMessageAgainstTemplate(message, template);
 				if (!map.isEmpty()) {
 					parsed=true;
-					TestingFrame.messageTemplateMap.put(message, template);
-					TestingFrame.parsedMessages.add(message);
+					// Дабы избежать добавления фактически шаблона, который был разобран шаблоном
+					if(!message.equals(template)){
+						messageTemplateMap.put(message, template);	
+					}
 					entry=new Entry(message, template, map);
 					returnList.add(entry);
 					break;
 				} 
 			}
 			if(parsed){
-				parsedMessages++;
+				parsedMessagesCount++;
 			} else {
-				TestingFrame.unparsedMessages.add(message);
-				unparsedMessages++;
+				unparsedMessages.add(message);
+				unparsedMessagesCount++;
 			}
 		}
 		
+		TestingFrame.messageTemplateMap = messageTemplateMap;
+		TestingFrame.unparsedMessages = unparsedMessages;
 		return returnList;
 	}
 

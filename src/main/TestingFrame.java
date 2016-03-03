@@ -26,9 +26,9 @@ public class TestingFrame {
 	public static List<ParseMessagesComposite.Entry> entries;
 	public static SimilarMessagesComposite.TreeNode placeholdersRoot = new TreeNode("placeholdersRoot");
 	/** Соответствие message-template */
-	public static Map<String, String> messageTemplateMap = new HashMap<String,String>();
+	public static Map<String, String> messageTemplateMap;
 	public static Set<String> unparsedMessages;
-	public static List<String> parsedMessages;
+//	public static List<String> parsedMessages;
 	
 	public TestingFrame() {
 		display = new Display();
