@@ -1,5 +1,8 @@
 package main;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -7,10 +10,10 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
 
-import composites.SourceDataComposite;
 import composites.ParseMessagesComposite;
 import composites.SimilarMessagesComposite;
 import composites.SimilarMessagesComposite.TreeNode;
+import composites.SourceDataComposite;
 
 public class TestingFrame {
 	private final Display display;
@@ -22,6 +25,10 @@ public class TestingFrame {
 	public static List<String> templates;
 	public static List<ParseMessagesComposite.Entry> entries;
 	public static SimilarMessagesComposite.TreeNode placeholdersRoot = new TreeNode("placeholdersRoot");
+	/** Соответствие message-template */
+	public static Map<String, String> messageTemplateMap = new HashMap<String,String>();
+	public static Set<String> unparsedMessages;
+	public static List<String> parsedMessages;
 	
 	public TestingFrame() {
 		display = new Display();

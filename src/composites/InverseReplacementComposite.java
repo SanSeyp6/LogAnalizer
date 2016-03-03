@@ -1,10 +1,11 @@
 package composites;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
@@ -29,7 +30,7 @@ import main.TestingFrame;
 import util.ParseMessage;
 
 public class InverseReplacementComposite extends GeneralComposite {
-	private Map<String, List<String>> inverseMap;
+	private Map<String, Set<String>> inverseMap;
 	private Map<String, String> replacements;
 	private TableViewer tableViewer;
 	private CheckboxTableViewer checkboxTableViewer;
@@ -131,7 +132,7 @@ public class InverseReplacementComposite extends GeneralComposite {
 			@Override
 			public String getText(Object element) {
 				if (element instanceof Map.Entry<?, ?>) {
-					Map.Entry<String, List<String>> entry = (Entry<String, List<String>>) element;
+					Map.Entry<String, Set<String>> entry = (Entry<String, Set<String>>) element;
 					return entry.getKey();
 				} else {
 					return super.getText(element);
@@ -147,7 +148,7 @@ public class InverseReplacementComposite extends GeneralComposite {
 			@Override
 			public String getText(Object element) {
 				if (element instanceof Map.Entry<?, ?>) {
-					Map.Entry<String, List<String>> entry = (Entry<String, List<String>>) element;
+					Map.Entry<String, Set<String>> entry = (Entry<String, Set<String>>) element;
 					return entry.getValue().toString();
 				} else {
 					return super.getText(element);
@@ -158,59 +159,31 @@ public class InverseReplacementComposite extends GeneralComposite {
 		nextButton.setEnabled(true);
 	}
 
-	public void replaceValuesWithNames(List<String> messages) {
-		replacements = new HashMap<String, String>();
-		String oldMessage, newMessage;
-		// int oldMessageIndex;
-		String regexp;
-
-		for (int i = 0; i < messages.size(); i++) {
-			for (Entry<String, List<String>> entry : inverseMap.entrySet()) {
-				// надо понять как-то, что нам надо сейчас заменять или же
-				// не нужно
-				if (entry.getValue().size() == 1) {
-					/*
-					 * Пока решение такое. Делаем разбивку на токены с
-					 * сохранением разделителей как токены для обеих строк. И
-					 * если набор токенов из inverseMap полностью содержится в
-					 * том же порядке внутри набора токенов из template, то
-					 * тогда выполняем замену. При этом походу нельзя делать
-					 * replaceAll, надо будет делать replaceFirst и повторять
-					 * процедуру При этом в replace-ах надо делать эскейпинг
-					 * моих строк. Для этого мною сделан ParseMessage
-					 */
-
-					/*
-					 * Текущее решение заключается в том, чтобы просто втупую
-					 * заменять и ошибки обнаруживать и исправлять руками,
-					 * "дообучая" разбор =)
-					 */
-					regexp = ParseMessage.escapeSpecialRegexChars(entry.getKey());
-					oldMessage = messages.get(i);
-					newMessage = oldMessage.replaceAll(regexp, "{" + entry.getValue().get(0) + "}");
-					// messages.set(i, messages.get(i).replaceAll(regexp, "{" +
-					// entry.getValue().get(0) + "}"));
-					if (!oldMessage.equals(newMessage)) {
-						replacements.put(oldMessage, newMessage);
-					}
-					continue;
-				} else {
-					// System.out.println("Ambigious value: " + entry.getKey());
-				}
-			}
+	// TODO вообще Map<String,String> parsedMessagesCandidates и List<ParseMessagesComposite.Entry> entries дублируют информацию. Надо что-то придумать 
+	public void setInput(Map<String,String> parsedMessagesCandidates, List<ParseMessagesComposite.Entry> entries, Set<String> unparsedMessages){
+		inverseMap = buildInverseMap(entries);
+		Map<String, String> tmpMap = buildUnparsedMessagesReplacementCandidates(unparsedMessages);
+		replacements = new HashMap<String,String>(parsedMessagesCandidates);
+		replacements.putAll(tmpMap);
+		
+		System.out.println("parsedMessagesCandidates: "+ parsedMessagesCandidates.size() +"; UnparsedMessagesReplacementCandidates:"+ tmpMap.size());
+		
+		tableViewer.setInput(inverseMap.entrySet());
+		for (TableColumn column : table.getColumns()) {
+			column.pack();
 		}
-
-		// return replacements;
+		
 		checkboxTableViewer.setInput(replacements.entrySet());
 		for (TableColumn column : table_2.getColumns()) {
 			column.pack();
 		}
 	}
 
-	public void buildInverseMap(List<ParseMessagesComposite.Entry> entries) {
-		Map<String, List<String>> returnMap = new HashMap<String, List<String>>();
+	
+	private Map<String, Set<String>> buildInverseMap(List<ParseMessagesComposite.Entry> entries) {
+		Map<String, Set<String>> returnMap = new HashMap<String, Set<String>>();
 		Map<String, String> valuesMap;
-		List<String> list;
+		Set<String> attributesSet; 
 
 		for (ParseMessagesComposite.Entry pEntry : entries) {
 			valuesMap = pEntry.getParsedValues();
@@ -220,45 +193,60 @@ public class InverseReplacementComposite extends GeneralComposite {
 				try {
 					Integer.parseInt(entry.getKey());
 				} catch (NumberFormatException e) {
-					list = returnMap.get(entry.getValue());
+					attributesSet = returnMap.get(entry.getValue());
 					
-					// тут случилось, что пустые значения добавляются в placeholdersRoot и подставляются в обратной замене
+					// случилось, что пустые значения добавляются в placeholdersRoot и подставляются в обратной замене
+					// Так я от этого защищаюсь.
 					if(entry.getValue().isEmpty()){
-						System.out.println("entry.getValue() is \"\"");
+//						System.out.println("entry.getValue() is \"\"");
 						continue;
 					}
 					
-					if (list == null) {
-						list = new ArrayList<String>();
-						returnMap.put(entry.getValue(), list);
-						list.add(entry.getKey());
+					if (attributesSet == null) {
+						attributesSet = new HashSet<String>();
+						returnMap.put(entry.getValue(), attributesSet);
+						attributesSet.add(entry.getKey());
 					} else {
-						if (!list.contains(entry.getKey())) {
-							list.add(entry.getKey());
-						}
+						attributesSet.add(entry.getKey());
 					}
 				}
 			}
 		}
 
-		inverseMap = returnMap;
-		tableViewer.setInput(inverseMap.entrySet());
-		for (TableColumn column : table.getColumns()) {
-			column.pack();
-		}
+		return returnMap;
 	}
+	
+	/**
+	 * Метод на основе построенных обратных соответствий и переданного списка неразобранных сообщений
+	 * строит кандидаты-соответствия для замены.
+	 * @param unparsedMessages
+	 */
+	// TODO надо переименовать метод, так как он плохо соответстсвует тому, что на самом деле происходит
+	private Map<String, String> buildUnparsedMessagesReplacementCandidates(Set<String> unparsedMessages) {
+		Map <String, String> replacementCandidates = new HashMap<String, String>();
+		String template;
+		String regexp;
 
-	public void replaceCheckedMessages(List<String> messages) {
-		Object[] checkedEntriesArray = checkboxTableViewer.getCheckedElements();
-		Map.Entry<String, String> entry;
-		for (Object o : checkedEntriesArray) {
-			if (o instanceof Map.Entry<?, ?>) {
-				entry = (Map.Entry<String, String>) o;
-				messages.set(messages.indexOf(entry.getKey()), entry.getValue());
-			} else {
-				throw new RuntimeException("object class is: " + o.getClass());
+		for(String message: unparsedMessages){
+			for (Entry<String, Set<String>> entry : inverseMap.entrySet()) {
+				// надо понять как-то, что нам надо сейчас заменять или же
+				// не нужно
+				if (entry.getValue().size() == 1) {
+					/*
+					 * Текущее решение заключается в том, чтобы просто втупую
+					 * заменять, а ошибки обнаруживать и исправлять руками,
+					 * "дообучая" разбор =)
+					 */
+					regexp = ParseMessage.escapeSpecialRegexChars(entry.getKey());
+					template = message.replaceAll(regexp, "{" + entry.getValue().iterator().next() + "}");
+					if (!message.equals(template)) {
+						replacementCandidates.put(message, template);
+					}
+				}
 			}
 		}
+		
+		return replacementCandidates;
 	}
 
 	@Override
@@ -271,6 +259,26 @@ public class InverseReplacementComposite extends GeneralComposite {
 		SourceDataComposite sdc = new SourceDataComposite(parent, SWT.NONE);
 		sdc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		sdc.setInput(TestingFrame.messages);
+	}
+
+	/**
+	 * Заменяет в переданном списке сообщения, отмеченные в таблице, шаблоны 
+	 * @param messages
+	 */
+	public void replaceCheckedMessages(List<String> messages) {
+		Object[] checkedEntriesArray = checkboxTableViewer.getCheckedElements();
+		Map.Entry<String, String> entry;
+		for (Object o : checkedEntriesArray) {
+			System.out.println(o);
+			
+			
+			if (o instanceof Map.Entry<?, ?>) {
+				entry = (Map.Entry<String, String>) o;
+				messages.set(messages.indexOf(entry.getKey()), entry.getValue());
+			} else {
+				throw new RuntimeException("object class is: " + o.getClass());
+			}
+		}
 	}
 
 }
