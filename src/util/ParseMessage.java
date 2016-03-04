@@ -1,13 +1,11 @@
 package util;
 
 
-import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,7 +13,6 @@ public class ParseMessage {
 
 	public static final Pattern SPECIAL_REGEX_CHARS = Pattern.compile("[{}()\\[\\].+*?^$\\\\|]");
 	private static final Pattern PLACEHOLDERS_REGEX = Pattern.compile("\\{\\w*\\}");
-
 
 	public static String escapeSpecialRegexChars(String str) {
 		return SPECIAL_REGEX_CHARS.matcher(str).replaceAll("\\\\$0");
@@ -85,4 +82,5 @@ public class ParseMessage {
 			return returnList;
 		}
 	}
+	
 }
