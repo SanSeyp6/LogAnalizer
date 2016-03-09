@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 public class ParseMessage {
 
 	public static final Pattern SPECIAL_REGEX_CHARS = Pattern.compile("[{}()\\[\\].+*?^$\\\\|]");
-	private static final Pattern PLACEHOLDERS_REGEX = Pattern.compile("\\{\\w*\\}");
+	public static final Pattern PLACEHOLDERS_REGEX = Pattern.compile("\\{\\w*\\}");
 
 	public static String escapeSpecialRegexChars(String str) {
 		return SPECIAL_REGEX_CHARS.matcher(str).replaceAll("\\\\$0");
