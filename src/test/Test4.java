@@ -8,12 +8,12 @@ import util.StringComparison;
 import util.Templates;
 import util.TemplatesNew;
 
-public class Test3 {
+public class Test4 {
 	public static void main(String[] args) {
 
 		List<String> similarStrings = Arrays.asList(new String[]{
-				" {sophos_internal_id}: from=<{email_address}>, size={size}, nrcpt=1 (queue active)",  
-				" {sophos_internal_id}: from=<prvs={prvs}={email_address}>, size={size}, nrcpt=1 (queue active)"
+				 " warning: {ip_address}: hostname zhitishko-bytie.ru verification failed: hostname nor servname provided, or not known", 
+				 " warning: {ip_address}: hostname poplar-poplar.ru verification failed: hostname nor servname provided, or not known"
 		});
 
 
@@ -33,11 +33,10 @@ public class Test3 {
 		System.out.println("templateList: "+ templateList);
 		
 		// объединяем шаблоны, получая один общий шаблон
-		String unitedTemplate = TemplatesNew.uniteTemplates(templateList);
+		String unitedTemplate = TemplatesNew.uniteTemplates2(templateList);
 
 		System.out.println("unitedTemplate: " + unitedTemplate);
 		
 	}
-	
 
 }

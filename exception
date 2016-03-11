@@ -11,3 +11,11 @@ UnitedTemplate: {sophos_internal_id}: from=<{email_address}>, size={size}, nrcpt
 CurrentTemplate: {sophos_internal_id}: from=<{&}{{&}email_address}>, size={size}, nrcpt=1 (queue active)
 i:30
 j:30
+
+
+
+ connect from localhost.localdomain[127.0.0.1]
+ disconnect from localhost.localdomain[127.0.0.1]
+ 
+ выдал юнайтед темплайт  connect from localhost.localdomain[127.0.0.1]
+ то есть без {&}

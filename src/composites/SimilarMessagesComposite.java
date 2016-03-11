@@ -43,6 +43,7 @@ import main.TestingFrame;
 import util.Metrics;
 import util.StringComparison;
 import util.Templates;
+import util.TemplatesNew;
 import util.Util;
 
 public class SimilarMessagesComposite extends GeneralComposite {
@@ -278,7 +279,7 @@ public class SimilarMessagesComposite extends GeneralComposite {
 			}
 
 			// объединяем шаблоны, получая один общий шаблон
-			String unitedTemplate = Templates.uniteTemplates(templateList);
+			String unitedTemplate = TemplatesNew.uniteTemplates2(templateList);
 			offeredTemplateText.setText(unitedTemplate);
 		} else {
 			changeGroupButton.setEnabled(false);
