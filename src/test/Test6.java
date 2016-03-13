@@ -1,9 +1,26 @@
-package util;
+package test;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class Templates {
+import util.ParseMessage;
+import util.StringComparison;
+
+public class Test6 {
+	public static void main(String[] args) {
+
+		List<String> similarStrings = Arrays.asList(new String[]{
+			" {sophos_internal_id}: removed",  
+			" {sophos_internal_id_2}: accepted",
+			" {sophos_internal_id_2}: discarded"
+		});
+
+
+		System.out.println(getUnitedTemplate(similarStrings));
+	}
+	
+	
 	public static String getUnitedTemplate(List<String> similarStrings){
 		String unitedTemplate;
 		String candidate;
@@ -13,23 +30,23 @@ public class Templates {
 		for (String s : similarStrings) {
 			lcs = StringComparison.computeLCS(lcs, s);
 		}
-//		System.out.println("before insertion: "+lcs);
+		System.out.println("before insertion: "+lcs);
 
 		unitedTemplate = insertUnnamedPlaceholders(lcs);
-//		System.out.println("after insertion: "+unitedTemplate);
+		System.out.println("after insertion: "+unitedTemplate);
 		
 		// TODO имеет смысл делать сразу нормальный regexp а не через промежуточный с {&}
 		for(int i=0; i<=lcs.length(); i++){
 			candidate = unitedTemplate.replaceFirst("\\{"+ i +"\\}", "");
 			String regexp = ParseMessage.escapeSpecialRegexChars(candidate);
 			regexp = regexp.replaceAll("\\\\\\{\\d*\\\\\\}", "(.*)"); // FUCK! Hate regexp!
-//			System.out.println("regexp: "+ regexp);
+			System.out.println("regexp: "+ regexp);
 			Pattern pattern = Pattern.compile(regexp);
 			if(matchesAll(pattern, similarStrings)) {
-//				System.out.println("matches all");
+				System.out.println("matches all");
 				unitedTemplate = candidate;
 			}
-//			System.out.println("after replacement: "+unitedTemplate);
+			System.out.println("after replacement: "+unitedTemplate);
 		}
 		
 		unitedTemplate = rebuildPlaceholderNumeration(unitedTemplate);
@@ -77,5 +94,4 @@ public class Templates {
 
 		return unitedTemplate;
 	}
-
 }

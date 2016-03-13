@@ -265,21 +265,8 @@ public class SimilarMessagesComposite extends GeneralComposite {
 					similarStrings.add(s);
 				}
 			}
-			// Нахождение LCS для списка похожих строк
-			String lcs = similarStrings.get(0);
-			for (String s : similarStrings) {
-				lcs = StringComparison.computeLCS(lcs, s);
-			}
 
-			// На основе полученного LCS строим шаблоны сообщений по списку
-			// похожих сообщений.
-			List<String> templateList = new ArrayList<String>();
-			for (String s : similarStrings) {
-				templateList.add(Templates.getTemplate(s, lcs));
-			}
-
-			// объединяем шаблоны, получая один общий шаблон
-			String unitedTemplate = TemplatesNew.uniteTemplates2(templateList);
+			String unitedTemplate = Templates.getUnitedTemplate(similarStrings);
 			offeredTemplateText.setText(unitedTemplate);
 		} else {
 			changeGroupButton.setEnabled(false);

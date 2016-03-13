@@ -28,7 +28,7 @@ public class Test5 {
 		// похожих сообщений.
 		List<String> templateList = new ArrayList<String>();
 		for (String s : similarStrings) {
-			templateList.add(Templates.getTemplate(s, lcs));
+//			templateList.add(Templates.getTemplate(s, lcs));
 		}
 		System.out.println("templateList: "+ templateList);
 	}

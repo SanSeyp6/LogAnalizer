@@ -66,9 +66,9 @@ public class StandaloneParse {
 	}
 
 	public static void main(String[] args) {
-		String messagesFileName="/home/sansey/Магистратура/Курс 2/ВКР/my_all_messages2.json";
-		String templatesFileName="/home/sansey/Магистратура/Курс 2/ВКР/templates2.txt";
-		String unparsedMessagesFileName="/home/sansey/Магистратура/Курс 2/ВКР/unparsed_messages.txt";
+		String messagesFileName="D:\\Универ\\Магистратура\\Диссертация\\Eclipse Workspaces\\log_analysis\\my_all_messages2.json";
+		String templatesFileName="D:\\Универ\\Магистратура\\Диссертация\\Eclipse Workspaces\\log_analysis\\templates.txt";
+		String unparsedMessagesFileName="D:\\Универ\\Магистратура\\Диссертация\\Eclipse Workspaces\\log_analysis\\unparsed_messages.txt";
 		List<String> messages;
 		List<String> templates;
 		Set<String> unparsedMessages;

@@ -28,14 +28,14 @@ public class Test4 {
 		// похожих сообщений.
 		List<String> templateList = new ArrayList<String>();
 		for (String s : similarStrings) {
-			templateList.add(Templates.getTemplate(s, lcs));
+//			templateList.add(Templates.getTemplate(s, lcs));
 		}
 		System.out.println("templateList: "+ templateList);
 		
 		// объединяем шаблоны, получая один общий шаблон
-		String unitedTemplate = TemplatesNew.uniteTemplates2(templateList);
+//		String unitedTemplate = TemplatesNew.uniteTemplates2(templateList);
 
-		System.out.println("unitedTemplate: " + unitedTemplate);
+//		System.out.println("unitedTemplate: " + unitedTemplate);
 		
 	}
 

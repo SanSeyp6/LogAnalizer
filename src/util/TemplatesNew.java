@@ -141,7 +141,7 @@ public class TemplatesNew {
 		return unitedTemplate; 
 	 }
 	
-
+/*
 		public static String uniteTemplates2(List<String> templates) {
 			String unitedTemplate = templates.get(0);
 			String tmp;
@@ -169,7 +169,7 @@ public class TemplatesNew {
 
 			return unitedTemplate;
 		}
-	 
+*/	 
 	public static String uniteTemplates3(List<String> templates){
 		if (templates == null || templates.isEmpty()){
 			throw new IllegalArgumentException("templates list is null or empty!");
