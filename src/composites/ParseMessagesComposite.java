@@ -1,7 +1,6 @@
 package composites;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -119,7 +118,7 @@ public class ParseMessagesComposite extends GeneralComposite {
 
 	public List<Entry> parseMessages(List<String> messages, List<String> templates){
 		List<Entry> returnList=new ArrayList<ParseMessagesComposite.Entry>();
-		Map<String,String> messageTemplateMap = new HashMap<String,String>();
+//		Map<String,String> messageTemplateMap = new HashMap<String,String>();
 		Set<String> unparsedMessages = new HashSet<String>();
 		Map<String, String> map;
 		Entry entry;
@@ -140,10 +139,10 @@ public class ParseMessagesComposite extends GeneralComposite {
 					parsed=true;
 					// Дабы избежать добавления фактически шаблона, который был разобран шаблоном
 					if(!message.equals(template)){
-						messageTemplateMap.put(message, template);	
+//						messageTemplateMap.put(message, template);
+						entry=new Entry(message, template, map);
+						returnList.add(entry);
 					}
-					entry=new Entry(message, template, map);
-					returnList.add(entry);
 					break;
 				} 
 			}
@@ -155,7 +154,7 @@ public class ParseMessagesComposite extends GeneralComposite {
 			}
 		}
 		
-		TestingFrame.messageTemplateMap = messageTemplateMap;
+//		TestingFrame.messageTemplateMap = messageTemplateMap;
 		TestingFrame.unparsedMessages = unparsedMessages;
 		return returnList;
 	}
@@ -167,7 +166,7 @@ public class ParseMessagesComposite extends GeneralComposite {
 		
 		InverseReplacementComposite irc=new InverseReplacementComposite(parent, SWT.NONE);
 		irc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		irc.setInput(TestingFrame.messageTemplateMap, TestingFrame.entries, TestingFrame.unparsedMessages);
+		irc.setInput(TestingFrame.entries, TestingFrame.unparsedMessages);
 		parent.layout(); // SWT caches layout, so we clear that cache in this way
 	}
 

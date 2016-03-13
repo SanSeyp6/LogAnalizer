@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.TableColumn;
 
 import main.TestingFrame;
 import util.ParseMessage;
+import util.Util;
 
 public class InverseReplacementComposite extends GeneralComposite {
 	private Map<String, Set<String>> inverseMap;
@@ -160,13 +161,13 @@ public class InverseReplacementComposite extends GeneralComposite {
 	}
 
 	// TODO вообще Map<String,String> parsedMessagesCandidates и List<ParseMessagesComposite.Entry> entries дублируют информацию. Надо что-то придумать 
-	public void setInput(Map<String,String> parsedMessagesCandidates, List<ParseMessagesComposite.Entry> entries, Set<String> unparsedMessages){
+	public void setInput(List<ParseMessagesComposite.Entry> entries, Set<String> unparsedMessages){
 		inverseMap = buildInverseMap(entries);
 		Map<String, String> tmpMap = buildUnparsedMessagesReplacementCandidates(unparsedMessages);
-		replacements = new HashMap<String,String>(parsedMessagesCandidates);
+		replacements = buildParsedMessagesReplacementCandidates(entries);
 		replacements.putAll(tmpMap);
 		
-		System.out.println("parsedMessagesCandidates: "+ parsedMessagesCandidates.size() +"; UnparsedMessagesReplacementCandidates:"+ tmpMap.size());
+		System.out.println("List<ParseMessagesComposite.Entry> entries: "+ entries.size() +"; UnparsedMessagesReplacementCandidates:"+ tmpMap.size());
 		
 		tableViewer.setInput(inverseMap.entrySet());
 		for (TableColumn column : table.getColumns()) {
@@ -188,11 +189,7 @@ public class InverseReplacementComposite extends GeneralComposite {
 		for (ParseMessagesComposite.Entry pEntry : entries) {
 			valuesMap = pEntry.getParsedValues();
 			for (Entry<String, String> entry : valuesMap.entrySet()) {
-				// TODO надо найти нормальный способ проверки, что
-				// строка является числом.
-				try {
-					Integer.parseInt(entry.getKey());
-				} catch (NumberFormatException e) {
+				if(!Util.isInteger(entry.getKey())) {
 					attributesSet = returnMap.get(entry.getValue());
 					
 					// случилось, что пустые значения добавляются в placeholdersRoot и подставляются в обратной замене
@@ -249,6 +246,33 @@ public class InverseReplacementComposite extends GeneralComposite {
 		return replacementCandidates;
 	}
 
+	/**
+	 * Метод строит на основе разобранных сообщений обратные соответствия "сообщение - шаблон". 
+	 * При этом учитывается, что в шаблоне не должно быть нумерованных плейсхолдеров, только именованые. 
+	 * Нумерованные плейсхолдеры, оставшиеся после генерации шаблона, заменяются на значение - 
+	 * типа ничего не было. 
+	 * @param entries
+	 * @return
+	 */
+	private Map<String, String> buildParsedMessagesReplacementCandidates(List<ParseMessagesComposite.Entry> entries) {
+		Map <String, String> replacementCandidates = new HashMap<String, String>();
+		Map<String, String> valuesMap;
+		String template; 
+
+		for (ParseMessagesComposite.Entry pEntry : entries) {
+			valuesMap = pEntry.getParsedValues();
+			template = pEntry.getTemplate();
+			for (Entry<String, String> entry : valuesMap.entrySet()) {
+				if(Util.isInteger(entry.getKey())){
+					template = template.replace("{"+entry.getKey()+"}", valuesMap.get(entry.getKey()));
+				} 
+			}
+			replacementCandidates.put(pEntry.getMessage(), template);
+		}
+		return replacementCandidates;
+	}
+
+	
 	@Override
 	protected void nextPressed() {
 		replaceCheckedMessages(TestingFrame.messages);
