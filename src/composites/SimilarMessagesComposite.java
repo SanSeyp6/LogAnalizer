@@ -4,10 +4,10 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -315,7 +315,7 @@ public class SimilarMessagesComposite extends GeneralComposite {
 		
 		public TreeNode(String text) {
 			this.text = text;
-			this.children = new HashSet<TreeNode>();
+			this.children = new TreeSet<TreeNode>();
 		}
 
 		public void addPropertyChangeListener(PropertyChangeListener listener) {
