@@ -41,9 +41,7 @@ import org.json.simple.parser.ParseException;
 
 import main.TestingFrame;
 import util.Metrics;
-import util.StringComparison;
 import util.Templates;
-import util.TemplatesNew;
 import util.Util;
 
 public class SimilarMessagesComposite extends GeneralComposite {

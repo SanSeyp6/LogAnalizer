@@ -32,6 +32,7 @@ public class SourceDataComposite extends GeneralComposite {
 	private Menu fileMenu;
 	private MenuItem mntmOpenDataFile;
 	private MenuItem openMessagesFlatMenuItem;
+	private MenuItem addTemplatesMenuItem;
 	private ListViewer listViewer;
 	private List<String> messages;
 
@@ -50,13 +51,13 @@ public class SourceDataComposite extends GeneralComposite {
 
 		addOpenJsonDataFileMenuItem(fileMenu);
 		addOpenFlatDataFileMenuItem(fileMenu);
+		addAddTemplatesMenuItem(fileMenu);
 
 		listViewer = new ListViewer(content, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		listViewer.setContentProvider(ArrayContentProvider.getInstance());
 		listViewer.setLabelProvider(new ColumnLabelProvider());
 		
 		this.addDisposeListener(new DisposeListener() {
-
 			@Override
 			public void widgetDisposed(DisposeEvent arg0) {
 				if (mntmOpenDataFile != null) {
@@ -64,6 +65,9 @@ public class SourceDataComposite extends GeneralComposite {
 				}
 				if (openMessagesFlatMenuItem != null) {
 					openMessagesFlatMenuItem.dispose();
+				}
+				if (addTemplatesMenuItem != null) {
+					addTemplatesMenuItem.dispose();
 				}
 				if (fileMenuItem != null){
 					if(fileMenu != null){
@@ -121,6 +125,33 @@ public class SourceDataComposite extends GeneralComposite {
 			}
 		});
 		openMessagesFlatMenuItem.setText("Open flat data file");
+	}
+
+	private void addAddTemplatesMenuItem(Menu menu) {
+		addTemplatesMenuItem = new MenuItem(menu, SWT.NONE);
+		addTemplatesMenuItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if(messages == null || messages.isEmpty()){
+					MessageDialog.openError(getShell(), "No messages loaded", "No messages loaded. You should load messages first!\n"
+							+ "Use \"File\"->\"Open JSON data file\" or \"File\"->\"Open flat data file\" for this purpose");
+					return;
+				}
+				FileDialog fd = new FileDialog(getShell());
+				String fileName = fd.open();
+				if (fileName != null) {
+					try {
+						System.out.println(fileName);
+						messages.addAll(Files.readAllLines(Paths.get(fileName)));
+						setInput(messages);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+						MessageDialog.openError(getShell(), "Error opening file", Util.getStackTrace(e1));
+					}
+				}
+			}
+		});
+		addTemplatesMenuItem.setText("Add Templates From File");
 	}
 
 	public List<String> getMessages() {
