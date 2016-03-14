@@ -180,6 +180,9 @@ public class StandaloneParseComposite extends Composite {
 								text_3.setText(Util.getStackTrace(ex));
 								ex.printStackTrace();
 							}
+						messages = null;
+						templates = null;
+						System.gc();
 						}
 					}
 				);
