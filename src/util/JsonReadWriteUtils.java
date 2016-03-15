@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -80,7 +81,9 @@ public class JsonReadWriteUtils {
 	 */
 	public static void saveJsonArrayToFile(JSONArray jsonArray, String fileName) throws IOException{
 		FileWriter fw = new FileWriter(fileName);
-		fw.write(jsonArray.toJSONString());
+		Writer writer = new JSONWriter(); // this writer adds indentation
+		jsonArray.writeJSONString(writer);
+		fw.write(writer.toString());
 		fw.flush();
 		fw.close();
 	}

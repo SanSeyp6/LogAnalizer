@@ -9,3 +9,15 @@ Generation 2:
 Total messages processed: 218587
 Parsed messages: 209292
 Unparsed Messages: 9295
+
+
+Generation 3:
+Total messages processed: 218587
+Parsed messages: 210959
+Unparsed Messages: 7628
+
+
+Generation 4:
+Total messages processed: 218587
+Parsed messages: 213713
+Unparsed Messages: 4874

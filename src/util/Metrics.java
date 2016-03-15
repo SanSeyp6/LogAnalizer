@@ -10,7 +10,9 @@ public class Metrics {
 	 * @param s1
 	 * @param s2
 	 * @param metric
-	 * @param metricThreshold значение метрики, после которого строки начинают считаться похожими
+	 * @param metricThreshold
+	 *            значение метрики, после которого строки начинают считаться
+	 *            похожими
 	 * @return
 	 */
 	public static boolean checkMetric(String s1, String s2, int metric, int metricThreshold) {
@@ -20,10 +22,44 @@ public class Metrics {
 
 		case OverlapCoefficient:
 			int coef = computeOverlapCoefficient(s1, s2);
-			return  coef > metricThreshold;
+			return coef > metricThreshold;
 
 		}
 		return false;
+	}
+	
+	/**
+	 * Проверяет строки по композитной метрике похожести. Композитная метрика рассчитывается как:<br/>
+	 * <code>
+	 * Math.min(s1.length(), s2.length()) < lengthThreshold ? checkMetric(s1, s2, Metrics.LevenshteinDistance, 20) : checkMetric(s1, s2, Metrics.OverlapCoefficient, 80)
+	 * 
+	 * </code>
+	 * 
+	 * @param s1
+	 * @param s2
+	 * @param lengthThreshold
+	 * @param levensteinThreshold
+	 * @param overlapThreshold
+	 * @return
+	 */
+	public static boolean checkCompositeMetric(String s1, String s2, int lengthThreshold, int levensteinThreshold, int overlapThreshold){
+		if(Math.min(s1.length(), s2.length()) < lengthThreshold){
+			return checkMetric(s1, s2, Metrics.LevenshteinDistance, 20);
+		} else {
+			return checkMetric(s1, s2, Metrics.OverlapCoefficient, 80);
+		}
+	}
+
+	public static int computeSimilarityMetric(int metric, String s1, String s2) {
+		switch (metric) {
+		case LevenshteinDistance:
+			return computeLevenshteinDistance(s1, s2);
+
+		case OverlapCoefficient:
+			return computeOverlapCoefficient(s1, s2);
+			
+			default: throw new IllegalArgumentException("Unknown metric! Use static named metrics in Metrics class");
+		}
 	}
 
 	private static int computeLevenshteinDistance(String s1, String s2) {
@@ -55,10 +91,10 @@ public class Metrics {
 	}
 
 	private static int computeOverlapCoefficient(String s1, String s2) {
-		String lcs=StringComparison.computeLCS(s1, s2);
+		String lcs = StringComparison.computeLCS(s1, s2);
 		int base = Math.min(s1.length(), s2.length());
-		
-		return base == 0 ? 0 : (int) lcs.length()*100/base;
+
+		return base == 0 ? 0 : (int) lcs.length() * 100 / base;
 	}
 
 }

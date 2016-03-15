@@ -1,0 +1,24 @@
+[
+  {
+    "paramsObj": {
+      "one": "two",
+      "three": "four"
+    },
+    "paramsArray": [
+      "first",
+      100
+    ],
+    "paramsStr": "some string"
+  },
+  {
+    "paramsObj": {
+      "one": "two",
+      "three": "four"
+    },
+    "paramsArray": [
+      "first",
+      100
+    ],
+    "paramsStr": "some string"
+  }
+]

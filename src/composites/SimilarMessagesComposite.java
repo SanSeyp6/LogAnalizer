@@ -4,6 +4,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -188,6 +189,7 @@ public class SimilarMessagesComposite extends GeneralComposite {
 			public void widgetSelected(SelectionEvent e) {
 				System.out.println("changeGroupButton pressed");
 				userTemplateText.setText("");
+				//TODO Быстро переписать это говно!! Из-за него и тормозит!
 				List<String> similarMessages = getNextSimilarGroup();
 				while (similarMessages.size() == 1) {
 					similarMessages = getNextSimilarGroup();
@@ -259,7 +261,7 @@ public class SimilarMessagesComposite extends GeneralComposite {
 
 			// Построение списка похожих строк
 			for (String s : messages) {
-				if (Metrics.checkMetric(currentMessage, s, Metrics.LevenshteinDistance, METRIC_THRESHOLD)) {
+				if (Metrics.checkCompositeMetric(currentMessage, s, 150, METRIC_THRESHOLD, 150)) {
 					similarStrings.add(s);
 				}
 			}
@@ -315,7 +317,7 @@ public class SimilarMessagesComposite extends GeneralComposite {
 		
 		public TreeNode(String text) {
 			this.text = text;
-			this.children = new TreeSet<TreeNode>();
+			this.children = new TreeSet<TreeNode>(new TreeNodeComparator());
 		}
 
 		public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -396,6 +398,14 @@ public class SimilarMessagesComposite extends GeneralComposite {
 				return false;
 			}
 			return true;
+		}
+		
+		public static class TreeNodeComparator implements Comparator<TreeNode> {
+
+			@Override
+			public int compare(TreeNode node1, TreeNode node2) {
+				return node1.getText().compareTo(node2.getText());
+			}
 		}
 	}
 
