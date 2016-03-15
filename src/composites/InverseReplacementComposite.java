@@ -160,7 +160,6 @@ public class InverseReplacementComposite extends GeneralComposite {
 		nextButton.setEnabled(true);
 	}
 
-	// TODO вообще Map<String,String> parsedMessagesCandidates и List<ParseMessagesComposite.Entry> entries дублируют информацию. Надо что-то придумать 
 	public void setInput(List<ParseMessagesComposite.Entry> entries, Set<String> unparsedMessages){
 		inverseMap = buildInverseMap(entries);
 		Map<String, String> tmpMap = buildUnparsedMessagesReplacementCandidates(unparsedMessages);
@@ -218,7 +217,6 @@ public class InverseReplacementComposite extends GeneralComposite {
 	 * строит кандидаты-соответствия для замены.
 	 * @param unparsedMessages
 	 */
-	// TODO надо переименовать метод, так как он плохо соответстсвует тому, что на самом деле происходит
 	private Map<String, String> buildUnparsedMessagesReplacementCandidates(Set<String> unparsedMessages) {
 		Map <String, String> replacementCandidates = new HashMap<String, String>();
 		String template;

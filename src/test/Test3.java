@@ -6,7 +6,7 @@ import java.util.List;
 
 import util.StringComparison;
 import util.Templates;
-import util.TemplatesNew;
+//import util.TemplatesNew;
 
 public class Test3 {
 	public static void main(String[] args) {
@@ -33,9 +33,9 @@ public class Test3 {
 		System.out.println("templateList: "+ templateList);
 		
 		// объединяем шаблоны, получая один общий шаблон
-		String unitedTemplate = TemplatesNew.uniteTemplates(templateList);
+		//String unitedTemplate = TemplatesNew.uniteTemplates(templateList);
 
-		System.out.println("unitedTemplate: " + unitedTemplate);
+		//System.out.println("unitedTemplate: " + unitedTemplate);
 		
 	}
 	

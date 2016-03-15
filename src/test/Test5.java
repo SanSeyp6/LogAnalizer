@@ -6,7 +6,7 @@ import java.util.List;
 
 import util.StringComparison;
 import util.Templates;
-import util.TemplatesNew;
+//import util.TemplatesNew;
 
 public class Test5 {
 	public static void main(String[] args) {

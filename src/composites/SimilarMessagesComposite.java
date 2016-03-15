@@ -45,6 +45,7 @@ import util.Metrics;
 import util.Templates;
 import util.Util;
 
+//TODO редкиостный говнокод. Весь класс надо переписывать, особенно методы связанные с getNextSimilarGroup()
 public class SimilarMessagesComposite extends GeneralComposite {
 	public static final int METRIC_THRESHOLD = 20;
 
@@ -266,6 +267,12 @@ public class SimilarMessagesComposite extends GeneralComposite {
 				}
 			}
 
+			if(similarStrings.size()==1){
+				return similarStrings;
+			}
+			//TODO для отладки диких тормозов
+			System.out.println(similarStrings);
+			
 			String unitedTemplate = Templates.getUnitedTemplate(similarStrings);
 			offeredTemplateText.setText(unitedTemplate);
 		} else {

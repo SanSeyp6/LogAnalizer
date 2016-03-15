@@ -211,8 +211,6 @@ public class InverseReplacementComposite extends Composite {
 		for (ParseMessagesComposite.Entry pEntry : entries) {
 			valuesMap = pEntry.getParsedValues();
 			for (Entry<String, String> entry : valuesMap.entrySet()) {
-				// TODO надо найти нормальный способ проверки, что
-				// строка является числом.
 				try {
 					Integer.parseInt(entry.getKey());
 				} catch (NumberFormatException e) {
