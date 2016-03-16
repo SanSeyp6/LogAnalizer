@@ -13,23 +13,24 @@ public class Templates {
 		for (String s : similarStrings) {
 			lcs = StringComparison.computeLCS(lcs, s);
 		}
-//		System.out.println("before insertion: "+lcs);
+		System.out.println("before insertion: "+lcs);
 
 		unitedTemplate = insertUnnamedPlaceholders(lcs);
-//		System.out.println("after insertion: "+unitedTemplate);
+		System.out.println("after insertion: "+unitedTemplate);
 		
 		// TODO имеет смысл делать сразу нормальный regexp а не через промежуточный с {&}
 		for(int i=0; i<=lcs.length(); i++){
 			candidate = unitedTemplate.replaceFirst("\\{"+ i +"\\}", "");
 			String regexp = ParseMessage.escapeSpecialRegexChars(candidate);
 			regexp = regexp.replaceAll("\\\\\\{\\d*\\\\\\}", "(.*)"); // FUCK! Hate regexp!
-//			System.out.println("regexp: "+ regexp);
+			System.out.println("regexp: "+ regexp);
 			Pattern pattern = Pattern.compile(regexp);
+			System.out.println("regexp compiled");
 			if(matchesAll(pattern, similarStrings)) {
-//				System.out.println("matches all");
+				System.out.println("matches all");
 				unitedTemplate = candidate;
 			}
-//			System.out.println("after replacement: "+unitedTemplate);
+			System.out.println("after replacement: "+unitedTemplate);
 		}
 		
 		unitedTemplate = rebuildPlaceholderNumeration(unitedTemplate);
@@ -55,6 +56,7 @@ public class Templates {
 	
 	private static boolean matchesAll(Pattern pattern, List<String> similarStrings){
 		for(String s: similarStrings){
+			System.out.println("test against: "+s);
 			if(!pattern.matcher(s).matches()){
 				return false;
 			}

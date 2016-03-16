@@ -193,8 +193,8 @@ public class SimilarMessagesComposite extends GeneralComposite {
 				//TODO Быстро переписать это говно!! Из-за него и тормозит!
 				List<String> similarMessages = getNextSimilarGroup();
 				while (similarMessages.size() == 1) {
-					similarMessages = getNextSimilarGroup();
 					System.out.println("similarMessages.size==1");
+					similarMessages = getNextSimilarGroup();
 				}
 				if (!similarMessages.isEmpty()) {
 					setInput(similarMessages);
@@ -266,14 +266,18 @@ public class SimilarMessagesComposite extends GeneralComposite {
 					similarStrings.add(s);
 				}
 			}
+			//TODO для отладки диких тормозов
+			System.out.println(similarStrings);
 
 			if(similarStrings.size()==1){
 				return similarStrings;
 			}
 			//TODO для отладки диких тормозов
-			System.out.println(similarStrings);
+			System.out.println("начал вычисление unitedtemplate");
 			
 			String unitedTemplate = Templates.getUnitedTemplate(similarStrings);
+			//TODO для отладки диких тормозов
+			System.out.println("закончил вычисление unitedtemplate");
 			offeredTemplateText.setText(unitedTemplate);
 		} else {
 			changeGroupButton.setEnabled(false);
