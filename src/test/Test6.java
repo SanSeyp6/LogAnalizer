@@ -135,6 +135,65 @@ public class Test6 {
 		return sb.toString();
 	}
 	
+		private static void test2(List<String> similarStrings, String lcs){
+		StringBuilder sb = new StringBuilder();
+		int index;
+		
+		for(index=0; index<lcs.length(); index++){
+			sb.append(lcs.charAt(index));
+			System.out.println(sb);
+			if(!containedInAll(similarStrings, sb.toString())){
+				System.out.println("Not contained");
+				break;
+			}
+		}
+		
+		sb.deleteCharAt(sb.length()-1);
+		index--;
+		System.out.println("\"" + sb.toString() + "\"");
+		
+		//-----------------------------------------------
+		sb = new StringBuilder();
+		for(index++; index<lcs.length(); index++){
+			sb.append(lcs.charAt(index));
+			System.out.println(sb);
+			if(!containedInAll(similarStrings, sb.toString())){
+				System.out.println("Not contained");
+				break;
+			}
+		}
+		
+		sb.deleteCharAt(sb.length()-1);
+		index--;
+		System.out.println("\"" + sb.toString() + "\"");
+
+		//-----------------------------------------------
+		sb = new StringBuilder();
+		for(index++; index<lcs.length(); index++){
+			sb.append(lcs.charAt(index));
+			System.out.println(sb);
+			if(!containedInAll(similarStrings, sb.toString())){
+				System.out.println("Not contained");
+				break;
+			}
+		}
+		
+		sb.deleteCharAt(sb.length()-1);
+		index--;
+		System.out.println("\"" + sb.toString() + "\"");
+	}
+
+	private static boolean containedInAll(List<String> similarStrings, String substring){
+		for(String s: similarStrings){
+			if(!s.contains(substring)){
+				return false;
+			}
+		}
+		
+		return true;
+	} 
+	
+	
 	private static void test(List<String> similarStrings, String lcs){
 		StringBuilder sb = new StringBuilder("^.*$");
 		int offset=1;
