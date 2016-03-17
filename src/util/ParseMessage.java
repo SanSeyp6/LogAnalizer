@@ -10,8 +10,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ParseMessage {
-	public static final String SPECIAL_CHARS_STRING = "[{}()[].+*?^$\\|]";
-	public static final Pattern SPECIAL_CHARS_REGEX = Pattern.compile("[{}()\\[\\].+*?^$\\\\|]");
+	public static final String SPECIAL_CHARS_STRING = "-[{}()[].+*?^$\\|]";
+	public static final Pattern SPECIAL_CHARS_REGEX = Pattern.compile("-[{}()\\[\\].+*?^$\\\\|]");
 	public static final Pattern PLACEHOLDERS_REGEX = Pattern.compile("\\{\\w*\\}");
 
 	public static String escapeSpecialRegexChars(String str) {

@@ -4,12 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.eclipse.core.runtime.PerformanceStats;
-
 import ru.hse.performance.PerformanceUtil;
 import util.ParseMessage;
-import util.StringComparison;
-import util.Templates;
 
 /**
  * В данном тесте разрабатываем код для Templates.getUnitedTemplate
@@ -41,8 +37,15 @@ public class Test6 {
 		System.out.println(pattern.matcher(similarStrings.get(0)).matches());
 		PerformanceUtil.printTimeForStep("after regexp matching");
 */
-		test(similarStrings, lcs);
 
+//		test(similarStrings, lcs);
+//		test2(similarStrings, lcs);
+
+		//Pattern pattern = Pattern.compile("^ \\{sophos_internal_id\\}: (.*?)o(.*?)s (.*?)g(.*?)mail(.*?)-(.*?)smtp(.*?)-(.*?)(.*)$");
+		  Pattern pattern = Pattern.compile("^ \\{sophos_internal_id\\}: (.*?)o(.*?)s (.*?)g(.*?)mail(.*?)-(.*?)smtp(.*?)(.*)$");
+		System.out.println(similarStrings.get(0));
+		System.out.println(pattern.matcher(similarStrings.get(0)).matches());
+		
 /*		for(String s: similarStrings){
 			System.out.println(getTemplate(s, lcs));	
 		}
@@ -50,7 +53,64 @@ public class Test6 {
 		
 	}
 	
+	private static void test2(List<String> similarStrings, String lcs){
+		StringBuilder sb = new StringBuilder();
+		int index;
+		
+		for(index=0; index<lcs.length(); index++){
+			sb.append(lcs.charAt(index));
+			System.out.println(sb);
+			if(!containedInAll(similarStrings, sb.toString())){
+				System.out.println("Not contained");
+				break;
+			}
+		}
+		
+		sb.deleteCharAt(sb.length()-1);
+		index--;
+		System.out.println("\"" + sb.toString() + "\"");
+		
+		//-----------------------------------------------
+		sb = new StringBuilder();
+		for(index++; index<lcs.length(); index++){
+			sb.append(lcs.charAt(index));
+			System.out.println(sb);
+			if(!containedInAll(similarStrings, sb.toString())){
+				System.out.println("Not contained");
+				break;
+			}
+		}
+		
+		sb.deleteCharAt(sb.length()-1);
+		index--;
+		System.out.println("\"" + sb.toString() + "\"");
 
+		//-----------------------------------------------
+		sb = new StringBuilder();
+		for(index++; index<lcs.length(); index++){
+			sb.append(lcs.charAt(index));
+			System.out.println(sb);
+			if(!containedInAll(similarStrings, sb.toString())){
+				System.out.println("Not contained");
+				break;
+			}
+		}
+		
+		sb.deleteCharAt(sb.length()-1);
+		index--;
+		System.out.println("\"" + sb.toString() + "\"");
+	}
+
+	private static boolean containedInAll(List<String> similarStrings, String substring){
+		for(String s: similarStrings){
+			if(!s.contains(substring)){
+				return false;
+			}
+		}
+		
+		return true;
+	} 
+	
 	private static void test(List<String> similarStrings, String lcs){
 		StringBuilder sb = new StringBuilder("^.*$");
 		int offset=1;
@@ -58,7 +118,7 @@ public class Test6 {
 		boolean matchesAll;
 		boolean specialCharAdded;
 	
-		for(int i=0; i<lcs.length(); i++){
+		for(int i=0; i<60; i++){
 			if(ParseMessage.SPECIAL_CHARS_STRING.indexOf(lcs.charAt(i))!=-1){
 				sb.insert(offset, '\\');
 				offset++;
@@ -77,10 +137,14 @@ public class Test6 {
 			if(!matchesAll){
 				if(specialCharAdded){
 					sb.insert(offset-2, ".*?");
-					offset+=3; // length of (.*) 
+					offset+=3; // length of substring
+					sb.insert(offset, ".*?");
+					offset+=3;
 				} else {
 					sb.insert(offset-1, ".*?");
-					offset+=3; // length of (.*) 
+					offset+=3; // length of substring
+					sb.insert(offset, ".*?");
+					offset+=3;
 				}
 				System.out.println("replacing regexp: "+ sb);
 				pattern = Pattern.compile(sb.toString());
@@ -180,3 +244,4 @@ public class Test6 {
 	private static final Pattern PLACEHOLDER_REGEX = Pattern.compile("^\\{\\w*\\}$");
 
 }
+
