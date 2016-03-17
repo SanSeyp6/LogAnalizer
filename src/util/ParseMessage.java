@@ -10,8 +10,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ParseMessage {
-	public static final String SPECIAL_CHARS_STRING = "-[{}()[].+*?^$\\|]";
-	public static final Pattern SPECIAL_CHARS_REGEX = Pattern.compile("-[{}()\\[\\].+*?^$\\\\|]");
+	public static final String SPECIAL_CHARS_STRING = "-{}()[].+*?^$\\|";
+	public static final Pattern SPECIAL_CHARS_REGEX = Pattern.compile("[-{}()\\[\\].+*?^$\\\\|]");
 	public static final Pattern PLACEHOLDERS_REGEX = Pattern.compile("\\{\\w*\\}");
 
 	public static String escapeSpecialRegexChars(String str) {
@@ -46,9 +46,7 @@ public class ParseMessage {
 			return Collections.emptyMap();
 		}
 		
-		String regexp = escapeSpecialRegexChars(template);
-		regexp = regexp.replaceAll("\\\\\\{\\w*\\\\\\}", "(.*)"); // FUCK! Hate regexp!
-		Pattern pattern = Pattern.compile(regexp);
+		Pattern pattern = buildPattern(template);
 		Matcher matcher = pattern.matcher(message);
 		if (matcher.matches()) {
 			int count = matcher.groupCount();
@@ -83,4 +81,17 @@ public class ParseMessage {
 		}
 	}
 	
+	public static Pattern buildPattern(String template){
+		String regexp = escapeSpecialRegexChars(template);
+		regexp = regexp.replaceAll("\\\\\\{\\w*\\\\\\}", "(.*?)"); // FUCK! Hate regexp!
+		return Pattern.compile(regexp);
+	}
+	
+	public static Pattern buildPatternWithUnnamedPlaceholders(String template){
+		String regexp = escapeSpecialRegexChars(template);
+		System.out.println(regexp);
+		regexp = regexp.replaceAll("\\\\\\{&\\\\\\}", "(.*?)"); // FUCK! Hate regexp!
+		System.out.println(regexp);
+		return Pattern.compile(regexp);
+	}
 }
