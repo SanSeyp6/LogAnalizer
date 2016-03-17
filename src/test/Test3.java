@@ -20,7 +20,7 @@ public class Test3 {
 		// Нахождение LCS для списка похожих строк
 		String lcs = similarStrings.get(0);
 		for (String s : similarStrings) {
-			lcs = StringComparison.computeLCS(lcs, s);
+			lcs = StringComparison.computeLCSunsequence(lcs, s);
 		}
 		System.out.println("lcs:"+ lcs);
 		

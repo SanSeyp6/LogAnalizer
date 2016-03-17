@@ -18,73 +18,129 @@ import util.Templates;
  */
 public class Test6 {
 	public static void main(String[] args) {
-/*
+
 		List<String> similarStrings = Arrays.asList(new String[]{
 				" {sophos_internal_id}: host gmail-smtp-in.l.google.com[64.233.164.27] said: 450-4.2.1 The user you are trying to contact is receiving mail at a rate that 450-4.2.1 prevents additional messages from being delivered. Please resend your 450-4.2.1 message at a later time. If the user is able to receive mail at that 450-4.2.1 time, your message will be delivered. For more information, please 450-4.2.1 visit 450 4.2.1  https://support.google.com/mail/answer/6592 1si9232024lfi.103 - gsmtp (in reply to RCPT TO command)",
-				" {sophos_internal_id}: host gmail-smtp-in.l.google.com[64.233.164.27] said: 450-4.2.1 The user you are trying to contact is receiving mail at a rate that 450-4.2.1 prevents additional messages from being delivered. Please resend your 450-4.2.1 message at a later time. If the user is able to receive mail at that 450-4.2.1 time, your message will be delivered. For more information, please 450-4.2.1 visit 450 4.2.1  https://support.google.com/mail/answer/6592 jn4si9227864lbc.203 - gsmtp (in reply to RCPT TO command)",
+	//			" {sophos_internal_id}: host gmail-smtp-in.l.google.com[64.233.164.27] said: 450-4.2.1 The user you are trying to contact is receiving mail at a rate that 450-4.2.1 prevents additional messages from being delivered. Please resend your 450-4.2.1 message at a later time. If the user is able to receive mail at that 450-4.2.1 time, your message will be delivered. For more information, please 450-4.2.1 visit 450 4.2.1  https://support.google.com/mail/answer/6592 jn4si9227864lbc.203 - gsmtp (in reply to RCPT TO command)",
 				" {sophos_internal_id}: to=<su.p.e.r.v.iso.r.20.1.5.invino@gmail.com>, relay=alt1.gmail-smtp-in.l.google.com[74.125.23.26]:25, delay=264, delays=262/0/1.6/0.94, dsn=4.2.1, status=deferred (host alt1.gmail-smtp-in.l.google.com[74.125.23.26] said: 450-4.2.1 The user you are trying to contact is receiving mail at a rate that 450-4.2.1 prevents additional messages from being delivered. Please resend your 450-4.2.1 message at a later time. If the user is able to receive mail at that 450-4.2.1 time, your message will be delivered. For more information, please 450-4.2.1 visit 450 4.2.1  https://support.google.com/mail/answer/6592 r9si11244175ioi.12 - gsmtp (in reply to RCPT TO command))",
 				" {sophos_internal_id}: host gmail-smtp-in.l.google.com[173.194.71.27] said: 450-4.2.1 The user you are trying to contact is receiving mail at a rate that 450-4.2.1 prevents additional messages from being delivered. Please resend your 450-4.2.1 message at a later time. If the user is able to receive mail at that 450-4.2.1 time, your message will be delivered. For more information, please 450-4.2.1 visit 450 4.2.1  https://support.google.com/mail/answer/6592 192si9255066lfh.71 - gsmtp (in reply to RCPT TO command)",
 				" {sophos_internal_id}: to=<su.p.e.r.v.iso.r.20.1.5.invino@gmail.com>, relay=alt1.gmail-smtp-in.l.google.com[74.125.23.26]:25, delay=624, delays=622/0.01/1.4/0.94, dsn=4.2.1, status=deferred (host alt1.gmail-smtp-in.l.google.com[74.125.23.26] said: 450-4.2.1 The user you are trying to contact is receiving mail at a rate that 450-4.2.1 prevents additional messages from being delivered. Please resend your 450-4.2.1 message at a later time. If the user is able to receive mail at that 450-4.2.1 time, your message will be delivered. For more information, please 450-4.2.1 visit 450 4.2.1  https://support.google.com/mail/answer/6592 72si20143688iob.61 - gsmtp (in reply to RCPT TO command))",
 				" {sophos_internal_id}: host gmail-smtp-in.l.google.com[64.233.163.27] said: 450-4.2.1 The user you are trying to contact is receiving mail at a rate that 450-4.2.1 prevents additional messages from being delivered. Please resend your 450-4.2.1 message at a later time. If the user is able to receive mail at that 450-4.2.1 time, your message will be delivered. For more information, please 450-4.2.1 visit 450 4.2.1  https://support.google.com/mail/answer/6592 dx2si8644490lbc.94 - gsmtp (in reply to RCPT TO command)",
 				" {sophos_internal_id}: to=<su.p.e.r.v.iso.r.20.1.5.invino@gmail.com>, relay=alt1.gmail-smtp-in.l.google.com[74.125.203.27]:25, delay=1345, delays=1342/0/1.3/0.94, dsn=4.2.1, status=deferred (host alt1.gmail-smtp-in.l.google.com[74.125.203.27] said: 450-4.2.1 The user you are trying to contact is receiving mail at a rate that 450-4.2.1 prevents additional messages from being delivered. Please resend your 450-4.2.1 message at a later time. If the user is able to receive mail at that 450-4.2.1 time, your message will be delivered. For more information, please 450-4.2.1 visit 450 4.2.1  https://support.google.com/mail/answer/6592 e97si20700057ioi.206 - gsmtp (in reply to RCPT TO command))"
 		});
-*/
 
+/*
 		List<String> similarStrings = Arrays.asList(new String[]{
 			" {sophos_internal_id}: from=<{email_address}>, size={size}, nrcpt=1 (queue active)",  
 			" {sophos_internal_id}: from=<prvs={prvs}={email_address}>, size={size}, nrcpt=1 (queue active)"
 		});
-
-		
-		String lcs = " {sophos_internal_id}: os gmail-smtp-in.l.google.com[3.1.27] said: 450-4.2.1 The user you are trying to contact is receiving mail at a rate that 450-4.2.1 prevents additional messages from being delivered. Please resend your 450-4.2.1 message at a later time. If the user is able to receive mail at that 450-4.2.1 time, your message will be delivered. For more information, please 450-4.2.1 visit 450 4.2.1  https://support.google.com/mail/answer/6592 si. - gsmtp (in reply to RCPT TO command)";
-
-//		System.out.println(StringComparison.computeLCS(similarStrings.get(2), similarStrings.get(0)));
-//		System.out.println(StringComparison.computeLCS(similarStrings.get(0), similarStrings.get(2)));
-		
-		String template1 = computeTemplate(similarStrings.get(0), similarStrings.get(1));
-//		String template2 = computeTemplate(similarStrings.get(2), similarStrings.get(0));
-//		String template = computeTemplate(similarStrings.get(2), template1);
-		System.out.println(template1);
-//		System.out.println(template2);
-//		System.out.println(template);
-		
-		//{&} - gsmtp (in reply to RCPT TO command){&}
-		
-//		PerformanceUtil.initialize();
-/*		
-		String regexp = "^ (.*)\\{(.*)s(.*)o(.*)p(.*)h(.*)o(.*)s(.*)_(.*)i(.*)n(.*)t(.*)e(.*)r(.*)n(.*)a(.*)l(.*)_(.*)i(.*)d(.*)\\}(.*):(.*) (.*)o(.*)s(.*) (.*)g(.*)m(.*)a(.*)i(.*)l(.*)-(.*)s(.*)m(.*)t(.*)p(.*)-(.*)i(.*)n(.*)\\.(.*)l(.*)\\.(.*)g(.*)o(.*)o(.*)g(.*)l(.*)e(.*)\\.(.*)c(.*)o(.*)m(.*)\\[(.*)3(.*)\\.(.*)1(.*)\\.(.*)2(.*)7(.*)\\](.*) (.*)s(.*)a(.*)i(.*)d(.*):(.*) (.*)4(.*)5(.*)0(.*)-(.*)4(.*)\\.(.*)2(.*)\\.(.*)1(.*) (.*)T(.*)h(.*)e(.*) (.*)u(.*)s(.*)e(.*)r(.*) (.*)y(.*)o(.*)u(.*) (.*)a(.*)r(.*)e(.*) (.*)t(.*)r(.*)y(.*)i(.*)n(.*)g(.*) (.*)t(.*)o(.*) (.*)c(.*)o(.*)n(.*)t(.*)a(.*)c(.*)t(.*) (.*)i(.*)s(.*) (.*)r(.*)e(.*)c(.*)e(.*)i(.*)v(.*)i(.*)n(.*)g(.*) (.*)m(.*)a(.*)i(.*)l(.*) (.*)a(.*)t(.*) (.*)a(.*) (.*)r(.*)a(.*)t(.*)e(.*) (.*)t(.*)h(.*)a(.*)t(.*) (.*)4(.*)5(.*)0(.*)-(.*)4(.*)\\.(.*)2(.*)\\.(.*)1(.*) (.*)p(.*)r(.*)e(.*)v(.*)e(.*)n(.*)t(.*)s(.*) (.*)a(.*)d(.*)d(.*)i(.*)t(.*)i(.*)o(.*)n(.*)a(.*)l(.*) (.*)m(.*)e(.*)s(.*)s(.*)a(.*)g(.*)e(.*)s(.*) (.*)f(.*)r(.*)o(.*)m(.*) (.*)b(.*)e(.*)i(.*)n(.*)g(.*) (.*)d(.*)e(.*)l(.*)i(.*)v(.*)e(.*)r(.*)e(.*)d(.*)\\.(.*) (.*)P(.*)l(.*)e(.*)a(.*)s(.*)e(.*) (.*)r(.*)e(.*)s(.*)e(.*)n(.*)d(.*) (.*)y(.*)o(.*)u(.*)r(.*) (.*)4(.*)5(.*)0(.*)-(.*)4(.*)\\.(.*)2(.*)\\.(.*)1(.*) (.*)m(.*)e(.*)s(.*)s(.*)a(.*)g(.*)e(.*) (.*)a(.*)t(.*) (.*)a(.*) (.*)l(.*)a(.*)t(.*)e(.*)r(.*) (.*)t(.*)i(.*)m(.*)e(.*)\\.(.*) (.*)I(.*)f(.*) (.*)t(.*)h(.*)e(.*) (.*)u(.*)s(.*)e(.*)r(.*) (.*)i(.*)s(.*) (.*)a(.*)b(.*)l(.*)e(.*) (.*)t(.*)o(.*) (.*)r(.*)e(.*)c(.*)e(.*)i(.*)v(.*)e(.*) (.*)m(.*)a(.*)i(.*)l(.*) (.*)a(.*)t(.*) (.*)t(.*)h(.*)a(.*)t(.*) (.*)4(.*)5(.*)0(.*)-(.*)4(.*)\\.(.*)2(.*)\\.(.*)1(.*) (.*)t(.*)i(.*)m(.*)e(.*),(.*) (.*)y(.*)o(.*)u(.*)r(.*) (.*)m(.*)e(.*)s(.*)s(.*)a(.*)g(.*)e(.*) (.*)w(.*)i(.*)l(.*)l(.*) (.*)b(.*)e(.*) (.*)d(.*)e(.*)l(.*)i(.*)v(.*)e(.*)r(.*)e(.*)d(.*)\\.(.*) (.*)F(.*)o(.*)r(.*) (.*)m(.*)o(.*)r(.*)e(.*) (.*)i(.*)n(.*)f(.*)o(.*)r(.*)m(.*)a(.*)t(.*)i(.*)o(.*)n(.*),(.*) (.*)p(.*)l(.*)e(.*)a(.*)s(.*)e(.*) (.*)4(.*)5(.*)0(.*)-(.*)4(.*)\\.(.*)2(.*)\\.(.*)1(.*) (.*)v(.*)i(.*)s(.*)i(.*)t(.*) (.*)4(.*)5(.*)0(.*) (.*)4(.*)\\.(.*)2(.*)\\.(.*)1(.*) (.*) (.*)h(.*)t(.*)t(.*)p(.*)s(.*):(.*)/(.*)/(.*)s(.*)u(.*)p(.*)p(.*)o(.*)r(.*)t(.*)\\.(.*)g(.*)o(.*)o(.*)g(.*)l(.*)e(.*)\\.(.*)c(.*)o(.*)m(.*)/(.*)m(.*)a(.*)i(.*)l(.*)/(.*)a(.*)n(.*)s(.*)w(.*)e(.*)r(.*)/(.*)6(.*)5(.*)9(.*)2(.*) (.*)s(.*)i(.*)\\.(.*) (.*)-(.*) (.*)g(.*)s(.*)m(.*)t(.*)p(.*) (.*)\\((.*)i(.*)n(.*) (.*)r(.*)e(.*)p(.*)l(.*)y(.*) (.*)t(.*)o(.*) (.*)R(.*)C(.*)P(.*)T(.*) (.*)T(.*)O(.*) (.*)c(.*)o(.*)m(.*)m(.*)a(.*)n(.*)d(.*)\\)(.*)$";
-		System.out.println("regexp: "+ regexp);
-		Pattern pattern = Pattern.compile(regexp);
-
-		PerformanceUtil.printTimeForStep("before regexp matching");
-		System.out.println(pattern.matcher(similarStrings.get(0)).matches());
-		PerformanceUtil.printTimeForStep("after regexp matching");
 */
-//		test(similarStrings, lcs);
-
-/*		for(String s: similarStrings){
-			System.out.println(getTemplate(s, lcs));	
-		}
-*/		
-		// {sophos_internal_id}: {&}host {&}gmail-smtp-in.l.google.com[{&}]	said: 450-4.2.1 The user you are trying to contact is receiving mail at a rate that 450-4.2.1 prevents additional messages from being delivered. Please resend your 450-4.2.1 message at a later time. If the user is able to receive mail at that 450-4.2.1 time, your message will be delivered. For more information, please 450-4.2.1 visit 450 4.2.1  https://support.google.com/mail/answer/6592 {&}1{&}24{&}l{&}y to RCPT TO command){&}
-
- 
-		// Да, как-то вот так
-		// {sophos_internal_id}: {&}host {&}gmail-smtp-in.l.google.com[{&}]	said: 450-4.2.1 The user you are trying to contact is receiving mail at a rate that 450-4.2.1 prevents additional messages from being delivered. Please resend your 450-4.2.1 message at a later time. If the user is able to receive mail at that 450-4.2.1 time, your message will be delivered. For more information, please 450-4.2.1 visit 450 4.2.1  https://support.google.com/mail/answer/6592 {&}1{&} - gsmtp (in reply to RCPT TO command){&}
-		// LCS
-		// {sophos_internal_id}: os gmail-smtp-in.l.google.com[3.1.27] said: 450-4.2.1 The user you are trying to contact is receiving mail at a rate that 450-4.2.1 prevents additional messages from being delivered. Please resend your 450-4.2.1 message at a later time. If the user is able to receive mail at that 450-4.2.1 time, your message will be delivered. For more information, please 450-4.2.1 visit 450 4.2.1  https://support.google.com/mail/answer/6592 si. - gsmtp (in reply to RCPT TO command)
-
-
 /*
-		for(int i=0; i<similarStrings.get(2).length(); i++ ){
-			System.out.println(similarStrings.get(2).charAt(i));
+		String lcSubsequence = StringComparison.computeLCSunsequence(similarStrings.get(0), similarStrings.get(1));
+		
+		String lcSubstring = lcSubsequence;
+		lcSubstring = StringComparison.computeLCSubsting(similarStrings.get(0), lcSubstring);
+		lcSubstring = StringComparison.computeLCSubsting(similarStrings.get(1), lcSubstring);
+		
+		System.out.println("lcSubstring: "+lcSubstring);
+		System.out.println("lcSubsequence: "+lcSubsequence);
+		
+		int index=lcSubsequence.indexOf(lcSubstring);
+		System.out.println(index);
+		System.out.println("Строки lcSubseqence после отделения:");
+		String before = lcSubsequence.substring(0, index);
+		System.out.println("до lcSubstring: \""+before+"\"");
+		String after = lcSubsequence.substring(index+lcSubstring.length(), lcSubsequence.length());
+		System.out.println("после lcSubstring: \""+after+"\"");
+		String template = before + "{&}" + lcSubstring + "{&}" + after;
+		System.out.println(template);
+		
+		////////////////////////////////////////////
+		System.out.println();
+		lcSubsequence = before;
+		lcSubstring = lcSubsequence;
+		lcSubstring = StringComparison.computeLCSubsting(similarStrings.get(0), lcSubstring);
+		lcSubstring = StringComparison.computeLCSubsting(similarStrings.get(1), lcSubstring);
+		System.out.println("lcSubstring: "+lcSubstring);
+		
+		index=lcSubsequence.indexOf(lcSubstring);
+		System.out.println(index);
+		System.out.println("Строки lcSubseqence после отделения:");
+		before = lcSubsequence.substring(0, index);
+		System.out.println("до lcSubstring: \""+before+"\"");
+		after = lcSubsequence.substring(index+lcSubstring.length(), lcSubsequence.length());
+		System.out.println("после lcSubstring: \""+after+"\"");
+		template = before + "{&}" + lcSubstring + "{&}" + after;
+		System.out.println(template);
+*/
+		test3(similarStrings);
+	}
+	
+	private static String test3(List<String> similarStrings){
+		String lcSubsequence = getLongestCommonSubsequenceForStringGroup(similarStrings);
+		String lcSubstring = getLongestCommonSubstringForStringGroupAndLCS(similarStrings, lcSubsequence);
+		
+		int index = lcSubsequence.indexOf(lcSubstring);
+		
+		String left = lcSubsequence.substring(0, index);
+		String right = lcSubsequence.substring(index+lcSubstring.length(), lcSubsequence.length());
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("{&}");
+		sb.append(lcSubstring);
+		
+		System.out.println("lcSubstring: "+lcSubstring);
+		System.out.println("lcSubsequence: "+lcSubsequence);
+		System.out.println(index);
+		System.out.println("Строки lcSubseqence после отделения:");
+		System.out.println("до lcSubstring: \""+left+"\"");
+		System.out.println("после lcSubstring: \""+right+"\"");
+		String template = left + "{&}" + lcSubstring + "{&}" + right;
+		System.out.println(template);
+		System.out.println(sb);
+		
+		
+		// TODO Для фукнции левых вычислений первым должено быть вычисление правого.... или нет?  
+		// Вычисления слева.
+		
+		
+		// Вычисления справа.
+		
+		
+		return null;
+	}
+	
+	private static String getLongestCommonSubsequenceForStringGroup(List<String> similarStrings){
+		if(similarStrings == null || similarStrings.isEmpty()){
+			throw new IllegalArgumentException("similarStrings shouldn't be null or empty");
 		}
-		*/
+		
+		String lcs = similarStrings.get(0);
+		for(String s: similarStrings){
+			lcs = StringComparison.computeLCSunsequence(s, lcs);
+		}
+		
+		return lcs;
+	}
+	
+	private static String getLongestCommonSubstringForStringGroupAndLCS(List<String> similarStrings, String lcSubsequence){
+		String lcs = lcSubsequence;
+		
+		for(String s: similarStrings){
+			lcs = StringComparison.computeLCSubsting(s, lcs);
+		}
+		
+		return lcs;
+	}
+	
+	private static String getStringAtLeft(List<String> similarStrings, String left, StringBuilder sb){
+		
+		return null;
 	}
 	
 	/**
 	 * Вычисляет шаблон для двух переданных строк, обнаруживая их различия.
-	 * Использует динамическое программирование. Смотри также реализацию метода {@link StringComparison#computeLCS(String, String)} 
+	 * Использует динамическое программирование. Смотри также реализацию метода {@link StringComparison#computeLCSunsequence(String, String)} 
 	 * 
 	 * @param s1
 	 * @param s2
