@@ -178,7 +178,7 @@ public class Test13 {
 		
 		String lcs = similarStrings.get(0);
 		for(String s: similarStrings){
-			lcs = StringComparison.computeLCSunsequence(s, lcs);
+			lcs = StringComparison.computeLCSubsequence(s, lcs);
 		}
 		
 		return lcs;

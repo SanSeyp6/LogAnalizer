@@ -199,7 +199,7 @@ public class Test6 {
 		
 		String lcs = similarStrings.get(0);
 		for(String s: similarStrings){
-			lcs = StringComparison.computeLCSunsequence(s, lcs);
+			lcs = StringComparison.computeLCSubsequence(s, lcs);
 		}
 		
 		return lcs;
@@ -217,7 +217,7 @@ public class Test6 {
 	
 	/**
 	 * Вычисляет шаблон для двух переданных строк, обнаруживая их различия.
-	 * Использует динамическое программирование. Смотри также реализацию метода {@link StringComparison#computeLCSunsequence(String, String)} 
+	 * Использует динамическое программирование. Смотри также реализацию метода {@link StringComparison#computeLCSubsequence(String, String)} 
 	 * 
 	 * @param s1
 	 * @param s2

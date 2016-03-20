@@ -187,7 +187,7 @@ public class SimilarMessagesComposite extends Composite {
 			// Нахождение LCS для списка похожих строк
 			String lcs = similarStrings.get(0);
 			for (String s : similarStrings) {
-				lcs = StringComparison.computeLCSunsequence(lcs, s);
+				lcs = StringComparison.computeLCSubsequence(lcs, s);
 			}
 
 			// На основе полученного LCS строим шаблоны сообщений по списку

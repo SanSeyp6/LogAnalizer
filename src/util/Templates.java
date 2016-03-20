@@ -11,7 +11,7 @@ public class Templates {
 		// Нахождение LCS для списка похожих строк
 		String lcs = similarStrings.get(0);
 		for (String s : similarStrings) {
-			lcs = StringComparison.computeLCSunsequence(lcs, s);
+			lcs = StringComparison.computeLCSubsequence(lcs, s);
 		}
 		System.out.println("before insertion: "+lcs);
 

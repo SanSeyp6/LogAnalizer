@@ -91,7 +91,7 @@ public class Metrics {
 	}
 
 	private static int computeOverlapCoefficient(String s1, String s2) {
-		String lcs = StringComparison.computeLCSunsequence(s1, s2);
+		String lcs = StringComparison.computeLCSubsequence(s1, s2);
 		int base = Math.min(s1.length(), s2.length());
 
 		return base == 0 ? 0 : (int) lcs.length() * 100 / base;
