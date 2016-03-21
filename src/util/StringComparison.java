@@ -144,11 +144,18 @@ public class StringComparison {
 		}
 
 		Set<String> lcStrings = new HashSet<String>();
+		Set<String> tmpSet;
 //		System.out.println("simStrings: " + similarStrings);
 		// эффективный обход "каждый с каждым"
 		for (int i = 0; i < similarStrings.size() - 1; i++) {
 			for (int j = i + 1; j < similarStrings.size(); j++) {
-				lcStrings.addAll(computeAllLCSubstings(similarStrings.get(i), similarStrings.get(j)));
+				tmpSet = computeAllLCSubstings(similarStrings.get(i), similarStrings.get(j));
+				if(tmpSet.isEmpty()){
+					return Collections.emptySet();
+				} else {
+					lcStrings.addAll(tmpSet);	
+				}
+				
 //				System.out.println("lcStrings for \"" + similarStrings.get(i) + "\" and \"" + similarStrings.get(j)
 //						+ "\" is: " + computeAllLCSubstings(similarStrings.get(i), similarStrings.get(j)));
 			}
@@ -158,25 +165,33 @@ public class StringComparison {
 	}
 
 	private static void retainShortestStringsInSet(Set<String> stringSet) {
+//		System.out.println("---------------retainShortestStringsInSet---------------");
+//		System.out.println(stringSet);
 		if(stringSet.isEmpty()){
 			return;
 		}
 		Iterator<String> iterator = stringSet.iterator(); 
 		String str=iterator.next();
+//		System.out.println("str: "+str);
 		int minLength =str.length();
 		
-		for (;iterator.hasNext();str=iterator.next()) {
+		while(iterator.hasNext()){
+			str=iterator.next();
 			if (str.length() < minLength) {
 				minLength = str.length();
 			}
 		}
 
-		for (iterator = stringSet.iterator(); iterator.hasNext();) {
+//		System.out.println(minLength);
+		
+		iterator = stringSet.iterator();
+		while(iterator.hasNext()){
 			str=iterator.next();
 			if (str.length() > minLength) {
 				iterator.remove();
 			}
 		}
+//		System.out.println("--end-of-------retainShortestStringsInSet---------------");
 	}
 
 	public static String computeLCSubsequence(String s1, String s2) {

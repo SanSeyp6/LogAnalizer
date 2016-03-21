@@ -2,7 +2,6 @@ package test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,14 +52,16 @@ public class Test16 {
 		List<String> similarStrings = TEST_CASE_1;
 		CaseTreeNode root=new CaseTreeNode(similarStrings);
 
-		/*
+/*		
 		List<List<Integer>> outerList = new ArrayList<List<Integer>>();
 		List<Integer> interList = Arrays.asList(new Integer[]{1,2,3});
 		outerList.add(interList);
-		interList = Arrays.asList(new Integer[]{4});
+		interList = Arrays.asList(new Integer[]{4,7,8});
 		outerList.add(interList);
-		interList = Arrays.asList(new Integer[]{5,6});
+		interList = Arrays.asList(new Integer[]{5});
 		outerList.add(interList);
+		
+		CaseTreeNode.getPositionsAsList(outerList);
 		
 		PositionTreeNode ptn = root.computePositionsTree(outerList);
 		ptn.printTree();
@@ -69,8 +70,7 @@ public class Test16 {
 		ptn.children.get(1).children.get(0).printNode();
 		ptn.children.get(1).children.get(0).children.get(0).printNode();
 		ptn.children.get(1).children.get(0).children.get(1).printNode();
-		*/
-		
+*/
 	}
 	
 	private static List<String> buildLeftSubstrings(List<String> strings, String lcSubstring, List<Integer> indexes){
@@ -121,7 +121,7 @@ public class Test16 {
 	 */
 	public static final class CaseTreeNode{
 		private final List<String> similarStrings;
-		private final String lcSequence;
+		private final String lcSequence; //TODO скорее всего это никому не надо
 		private final Set<String> lcStrings;
 		private final Map<String, List<List<Integer>>> positions;
 		private List<ChildCase> children;
@@ -166,7 +166,7 @@ public class Test16 {
 				position = s.indexOf(string);
 				while(position != -1){
 					positions.add(Integer.valueOf(position));
-					position+=s.length();
+					position+=string.length();
 					position = s.indexOf(string, position);
 				}
 				positionsList.add(positions);
@@ -175,43 +175,54 @@ public class Test16 {
 			return positionsList;
 		}
 		
-		private PositionTreeNode computePositionsTree(List<List<Integer>> positions){
-			PositionTreeNode root = new PositionTreeNode(-1, null);
-			
-			addPositionsToTree(root, positions, 0);
-			return root;
-		}
-		
 		/**
-		 * Метод добавляет все значения в списке из списка под индексом в дочерние элементы.
-		 * Нужен для построения дерева вариантов / комбинаций
-		 * @param node
-		 * @param positionsList
-		 * @param index
+		 * Метод строящий перечень вариантов позиций не на основе дерева, а сразу по списку.
+		 * Должен заменить выходки с PositionTreeNode прошлых версий
+		 * @return
 		 */
-		private void addPositionsToTree(PositionTreeNode node, List<List<Integer>> positionsList, int index){
-			if(index >= positionsList.size()){
-				return;
+		public static List<List<Integer>> getPositionsAsList(List<List<Integer>> positions){
+			int arraySize=1;
+			for(List<Integer> list: positions){
+				arraySize *= list.size();
 			}
-			List<Integer> positions = positionsList.get(index);
-			for(Integer i: positions){
-				node.children.add(new PositionTreeNode(i, node));
+			if(arraySize == 0){
+				throw new IllegalStateException("array size is 0");
+			}
+			int array[][] = new int[arraySize][positions.size()];
+			int repeatCount=arraySize;
+			int size;
+			// Заполняем массив элементами из positions
+			for(int j=0; j<positions.size(); j++){ // заполняем по столбикам
+				size = positions.get(j).size();
+				repeatCount/= size;
+				for(int i=0; i< size; i++){
+					for(int k=0; k< arraySize; k++){
+						array[k][j] = positions.get(j).get((k/repeatCount) % size);
+					}
+				}
+			}
+
+			// построение конечного списка списков
+			List<List<Integer>> returnList = new ArrayList<List<Integer>>();
+			List<Integer> list;
+			for(int i=0; i<arraySize; i++){
+				list = new ArrayList<Integer>(positions.size());
+				for(int j=0; j<positions.size(); j++){
+					list.add(array[i][j]);
+				}
+				returnList.add(list);
 			}
 			
-			for(PositionTreeNode ptn: node.children){
-				addPositionsToTree(ptn, positionsList, index+1);
-			}
+			return returnList;
 		}
 		
 		private List<ChildCase> computeChildren() {
 			List<ChildCase> children = new ArrayList<ChildCase>(2*lcStrings.size());
 			ChildCase childCase;
-			PositionTreeNode positionsTree;
 			List<List<Integer>> positionsList;
 			
 			for(Entry<String, List<List<Integer>>> entry: positions.entrySet()){
-				positionsTree = computePositionsTree(entry.getValue());
-				positionsList = positionsTree.getPositionsAsList();
+				positionsList = getPositionsAsList(entry.getValue());
 				for(List<Integer> pos: positionsList){
 					childCase = new ChildCase();
 					childCase.lcString = entry.getKey();
@@ -243,78 +254,5 @@ public class Test16 {
 		String lcString;
 		List<Integer> positions;
 		CaseTreeNode left, right;
-	}
-	
-	private static final class PositionTreeNode{
-		Integer position;
-		List<PositionTreeNode> children = new ArrayList<PositionTreeNode>();
-		PositionTreeNode parent;
-
-		public PositionTreeNode(Integer position, PositionTreeNode parent) {
-			this.position = position;
-			this.parent = parent;
-		}
-		
-		/**
-		 * Печатает все проходы по дереву в обратном порядке, от листа к корню
-		 */
-		public void printTree(){
-			PositionTreeNode p=this;
-			if(children.isEmpty()){
-				while(p.parent != null){
-					System.out.print(p.position);
-					if(p.parent.parent != null){
-						System.out.print(", ");
-					} else {
-						System.out.println();		
-					}
-					p=p.parent;
-				}
-			} else {
-				for(PositionTreeNode node : children){
-					node.printTree();
-				}
-			}
-		}
-		
-		public List<List<Integer>> getPositionsAsList(){
-			System.out.println("-----------getPositionsAsList---------");
-			List<List<Integer>> returnList = new ArrayList<List<Integer>>();
-			List<Integer> positions;
-			PositionTreeNode p;
-			
-			List<PositionTreeNode> leafs=new ArrayList<PositionTreeNode>();
-			addLeafPositionstions(leafs);
-			System.out.println(leafs);
-			System.out.println(leafs.get(0).position);
-			
-			for(PositionTreeNode leaf: leafs){
-				positions = new ArrayList<Integer>();
-				p=leaf;
-				while(p.parent != null){
-					positions.add(p.position);
-					p=p.parent;
-				}
-				Collections.reverse(positions);
-				System.out.println(positions);
-				returnList.add(positions);
-			}
-			System.out.println("--end-of---getPositionsAsList---------");
-			return returnList;
-		}
-		
-		private void addLeafPositionstions(List<PositionTreeNode> leafs){
-			if(this.children.isEmpty()){
-				leafs.add(this);
-			} else {
-				for(PositionTreeNode node: children){
-					node.addLeafPositionstions(leafs);
-				}
-			}
-		}
-		
-		public void printNode(){
-			System.out.println("PositionTreeNode [position:" + position+ " children: "+children+"]");
-		}
 	} 
 }
