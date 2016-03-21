@@ -2,7 +2,9 @@ package test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import util.StringComparison;
@@ -60,8 +62,9 @@ public class Test16 {
 		private final List<String> similarStrings;
 		private final String lcSequence;
 		private final Set<String> lcStrings;
-		private List<CaseTreeNode> children;
-		private final List<List<Integer>> positions;
+		private final Map<String, List<List<Integer>>> positions;
+//		private List<CaseTreeNode> children;
+
 		
 		public CaseTreeNode(List<String> similarStrings) {
 			this.similarStrings = similarStrings;
@@ -70,16 +73,38 @@ public class Test16 {
 			this.positions = computePositions();
 		}
 		
-		private List<List<Integer>> computePositions() {
-			List<List<Integer>> returnList = new ArrayList<List<Integer>>();
-			List<Integer> variant;
+		private Map<String, List<List<Integer>>> computePositions() {
+			final Map<String, List<List<Integer>>> positions= new HashMap<String, List<List<Integer>>>(lcStrings.size());
 			
-			for(String lcString: lcStrings){
-				for(String s: similarStrings){
-					
-				}
+			for(String lcString: this.lcStrings){
+				positions.put(lcString, computePositionsOfString(lcString));
 			}
-			return null;
+			
+			return positions;
+		}
+		
+		/**
+		 * Вычисляет позиции переданной подстроки в списке строк {@link #similarStrings}
+		 * @param lcString
+		 * @return
+		 */
+		private List<List<Integer>> computePositionsOfString(String string){
+			final List<List<Integer>> positionsList = new ArrayList<List<Integer>>(similarStrings.size());
+			List<Integer> positions;
+			int position;
+			
+			for(String s: similarStrings){
+				positions = new ArrayList<Integer>();
+				position = s.indexOf(string);
+				while(position != -1){
+					positions.add(Integer.valueOf(position));
+					position+=s.length();
+					position = s.indexOf(string);
+				}
+				positionsList.add(positions);
+			}
+			
+			return positionsList;
 		}
 
 		public List<String> getSimilarStrings() {
@@ -93,7 +118,7 @@ public class Test16 {
 		public Set<String> getLcStrings() {
 			return lcStrings;
 		}
-		
+/*		
 		public List<CaseTreeNode> getChildren() {
 			if(children == null){
 				children = computeChildren();
@@ -105,5 +130,6 @@ public class Test16 {
 			// TODO Auto-generated method stub
 			return null;
 		}
+*/		
 	}
 }
