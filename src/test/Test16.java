@@ -2,12 +2,15 @@ package test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Pattern;
 import java.util.Set;
 
+import util.ParseMessage;
 import util.StringComparison;
 
 /**
@@ -51,6 +54,16 @@ public class Test16 {
 	public static void main(String[] args) {
 		List<String> similarStrings = TEST_CASE_1;
 		CaseTreeNode root=new CaseTreeNode(similarStrings);
+		root.getUnitedTemplates();
+		
+		String template = "{&} {sophos_internal_id}: {&}o{&}s{&}t{&}gmail-smtp-in.l.google.com[{&}4{&}.2{&}] said: 450-4.2.1 The user you are trying to contact is receiving mail at a rate that 450-4.2.1 prevents additional messages from being delivered. Please resend your 450-4.2.1 message at a later time. If the user is able to receive mail at that 450-4.2.1 time, your message will be delivered. For more information, please 450-4.2.1 visit 450 4.2.1  https://support.google.com/mail/answer/6592 {&}si{&} - gsmtp (in reply to RCPT TO command){&}";
+		Pattern pattern = ParseMessage.buildPatternWithUnnamedPlaceholders(template);
+		if(matchesAll(pattern, similarStrings)){
+			System.out.println("matches all");
+		} else {
+			System.out.println("doesn't match");
+		}
+
 
 /*		
 		List<List<Integer>> outerList = new ArrayList<List<Integer>>();
@@ -73,14 +86,26 @@ public class Test16 {
 */
 	}
 	
+	private static boolean matchesAll(Pattern pattern, List<String> similarStrings){
+		for(String s: similarStrings){
+			if(!pattern.matcher(s).matches()){
+				System.out.println("match fails at: "+s);
+				return false;
+			}
+		}
+		
+		return true;
+	}
+
+	
 	private static List<String> buildLeftSubstrings(List<String> strings, String lcSubstring, List<Integer> indexes){
-		System.out.println("-----------buildLeftSubstrings-----------------------------------------");
+/*		System.out.println("-----------buildLeftSubstrings-----------------------------------------");
 		for(String s: strings){
 			System.out.println(s);
 		}
 		System.out.println("strings.size(): "+ strings.size());
 		System.out.println("indexes.size(): "+ indexes.size());
-
+*/
 		if(strings.size()!=indexes.size()){
 			throw new IllegalArgumentException("unequal size of lists!");
 		}
@@ -90,7 +115,7 @@ public class Test16 {
 			leftSubstrings.add(strings.get(i).substring(0, indexes.get(i)));
 		}
 		
-		System.out.println();
+/*		System.out.println();
 		System.out.println("left substrings:");
 		for(String s: leftSubstrings){
 			System.out.println(s);
@@ -98,7 +123,7 @@ public class Test16 {
 
 		System.out.println("--end-of---buildLeftSubstrings-----------------------------------------");
 		System.out.println();
-		return leftSubstrings;
+*/		return leftSubstrings;
 	}
 	
 	private static List<String> buildRightSubstrings(List<String> strings, String lcSubstring, List<Integer> indexes){
@@ -121,33 +146,55 @@ public class Test16 {
 	 */
 	public static final class CaseTreeNode{
 		private final List<String> similarStrings;
-		private final String lcSequence; //TODO скорее всего это никому не надо
+		// на вид это не нужно, но будет использоваться чтобы сократить обсчёты, когда длина lcString равна 1
+		private final String lcSequence; 
 		private final Set<String> lcStrings;
-		private final Map<String, List<List<Integer>>> positions;
+		private Map<String, List<List<Integer>>> positions;
 		private List<ChildCase> children;
+		private boolean leaf = false;
+		private boolean oneSymbolLengthLCStr = false;
 
 		
 		public CaseTreeNode(List<String> similarStrings) {
+//			System.out.println("------------CaseTreeNode--------------");
 			this.similarStrings = similarStrings;
+			//-------------
+//			for(String s:similarStrings){
+//				System.out.println("\""+s+"\"");
+//			}
+			//---------------
 			this.lcSequence = StringComparison.computeLCSubsequenceForStringGroup(similarStrings);
 			this.lcStrings = StringComparison.computeAllLCSubstringsForStringGroup(similarStrings);
-			this.positions = computePositions();
-			this.children = computeChildren();
+			if(this.lcStrings.isEmpty()){
+//				System.out.println("lcStrings set is empty!");
+				this.leaf = true;
+				this.children = Collections.emptyList();
+				this.positions = Collections.emptyMap();
+			} else {
+//				System.out.println("lcStrings: " + this.lcStrings);
+				if(this.lcStrings.iterator().next().length() == 1) {
+					this.oneSymbolLengthLCStr = true;
+//					System.out.println("should replace with LCSequence:" +this.lcSequence);
+					this.children = Collections.emptyList();
+					this.positions = Collections.emptyMap();
+					return;
+				}
+				this.positions = computePositions();
+				this.children = computeChildren();
+			}
+//			System.out.println("--end-of---CaseTreeNode--------------");
 		}
 		
 		private Map<String, List<List<Integer>>> computePositions() {
-			System.out.println("------------computePositions--------------");
-			for(String s:similarStrings){
-				System.out.println("\""+s+"\"");
-			}
+//			System.out.println("------------computePositions--------------");
 			final Map<String, List<List<Integer>>> positions= new HashMap<String, List<List<Integer>>>(lcStrings.size());
 			
 			for(String lcString: this.lcStrings){
 				positions.put(lcString, computePositionsOfString(lcString));
-				System.out.println("lcString: "+lcString+" positions: "+ positions.get(lcString));
+//				System.out.println("lcString: "+lcString+" positions: "+ positions.get(lcString));
 			}
 			
-			System.out.println("--end-of----computePositions--------------");
+//			System.out.println("--end-of----computePositions--------------");
 			return positions;
 		}
 		
@@ -217,36 +264,63 @@ public class Test16 {
 		}
 		
 		private List<ChildCase> computeChildren() {
+//			System.out.println("------------computeChildren--------------");
 			List<ChildCase> children = new ArrayList<ChildCase>(2*lcStrings.size());
 			ChildCase childCase;
 			List<List<Integer>> positionsList;
 			
 			for(Entry<String, List<List<Integer>>> entry: positions.entrySet()){
+//				System.out.println(entry.getKey() + ":" + entry.getValue());
 				positionsList = getPositionsAsList(entry.getValue());
 				for(List<Integer> pos: positionsList){
 					childCase = new ChildCase();
 					childCase.lcString = entry.getKey();
 					childCase.positions = pos;
-					childCase.left = new CaseTreeNode(buildLeftSubstrings(similarStrings, childCase.lcString, childCase.positions));
-					childCase.right = new CaseTreeNode(buildRightSubstrings(similarStrings, childCase.lcString, childCase.positions));
+//					System.out.println("Left ");
+/*					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+*/					childCase.left = new CaseTreeNode(buildLeftSubstrings(similarStrings, childCase.lcString, childCase.positions));
+//					System.out.println("Right ");
+/*					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+*/					childCase.right = new CaseTreeNode(buildRightSubstrings(similarStrings, childCase.lcString, childCase.positions));
 					children.add(childCase);
 				}
 			}
-			
+//			System.out.println("--end-of----computeChildren--------------");
 			return children;
 		}
+		
+		public List<String> getUnitedTemplates(){
+			List<String> unitedTemplates = new ArrayList<String>();
+/*			
+			for(ChildCase childCase: this.children){
+				childCase.printLeft();
+				System.out.println("------------------------");
+				System.out.println();
+			}
+*/
+			StringBuilder sb = new StringBuilder();
+			this.children.get(0).addToTemplate(sb);
+			System.out.println(sb);
+			
+			return unitedTemplates;
+		}
+		
+		public boolean isLeaf() {
+			return leaf;
+		}
 
-		
-		public List<String> getSimilarStrings() {
-			return similarStrings;
-		}
-		
-		public String getLcSequence() {
-			return lcSequence;
-		}
-		
-		public Set<String> getLcStrings() {
-			return lcStrings;
+		public boolean isOneSymbolLengthLCStr() {
+			return oneSymbolLengthLCStr;
 		}
 	}
 	
@@ -254,5 +328,54 @@ public class Test16 {
 		String lcString;
 		List<Integer> positions;
 		CaseTreeNode left, right;
+		
+		public void addToTemplate(StringBuilder sb){
+			
+			if((left.isLeaf() || left.isOneSymbolLengthLCStr()) && (right.isLeaf() || right.isOneSymbolLengthLCStr())){
+				if(left.isOneSymbolLengthLCStr() && right.isOneSymbolLengthLCStr()){
+					System.out.println("lcString: \""+lcString+"\"; left.isOneSymbolLengthLCStr(): \""+left.lcSequence+ "\" right.isOneSymbolLengthLCStr(): \""+ right.lcSequence+ "\"");
+				} else if(left.isOneSymbolLengthLCStr()){
+					System.out.println("lcString: \""+lcString+"\"; left.isOneSymbolLengthLCStr(): \""+left.lcSequence+ "\" right.children.get(0): \""+ "no_children"+ "\"");
+				} else if(right.isOneSymbolLengthLCStr()){
+					System.out.println("lcString: \""+lcString+"\"; left.children.get(0).lcString: \""+"no_children"+ "\" right.isOneSymbolLengthLCStr(): \""+ right.lcSequence+ "\"");
+				} else {
+					System.out.println("lcString: \""+lcString+"\"; left.children.get(0).lcString: \""+"no_children"+ "\" right.children.get(0): \""+ "no_children"+ "\"");					
+				}
+			} else if(left.isLeaf() || left.isOneSymbolLengthLCStr()){
+				System.out.println("lcString: \""+lcString+"\"; left.children.get(0).lcString: \""+ "no_children"+"\" right.children.get(0): \""+ right.children.get(0).lcString+ "\"");
+			} else if(right.isLeaf() || right.isOneSymbolLengthLCStr()){
+				System.out.println("lcString: \""+lcString+"\"; left.children.get(0): \""+left.children.get(0).lcString + "\" right.children.get(0): \""+"no_children"+ "\"");
+			} else {
+				System.out.println("lcString: \""+lcString+"\"; left.children.get(0): \""+left.children.get(0).lcString + "\" right.children.get(0): \""+ right.children.get(0).lcString+ "\"");
+			}
+					
+			
+			if(left.isLeaf()){
+//				sb.append("{&}");
+			} else if(left.isOneSymbolLengthLCStr()){
+				System.out.println("left.isOneSymbolLengthLCStr(). lcSubseq: "+ left.lcSequence);
+				for(int i=0; i < left.lcSequence.length(); i++){
+					sb.append("{&}");
+					sb.append(left.lcSequence.charAt(i));
+				}
+			} else { 
+				left.children.get(0).addToTemplate(sb);	
+			}
+			
+			sb.append("{&}");
+			sb.append(lcString);
+			
+			if(right.isLeaf()){
+//				sb.append("{&}");
+			} else if(right.isOneSymbolLengthLCStr()){
+				System.out.println("right.isOneSymbolLengthLCStr(). lcSubseq: "+ right.lcSequence);
+				for(int i=0; i < right.lcSequence.length(); i++){
+					sb.append("{&}");
+					sb.append(right.lcSequence.charAt(i));
+				}
+			} else {
+				right.children.get(0).addToTemplate(sb);
+			}
+		}
 	} 
 }

@@ -14,6 +14,7 @@ public class Test19 {
 
 	public static void main(String[] args) {
 		List<String> similarStrings = Arrays.asList(
+/*
 				"ho",
 				"ho",
 				"to=<",
@@ -21,6 +22,14 @@ public class Test19 {
 				"to=<",
 				"ho",
 				"to=<"
+*/
+				"st ", 
+				"st ", 
+				"=<su.p.e.r.v.iso.r.20.1.5.invino@gmail.com>, relay=alt1.",
+				"st ",
+				"=<su.p.e.r.v.iso.r.20.1.5.invino@gmail.com>, relay=alt1.",
+				"st ", 
+				".r.20.1.5.invino@gmail.com>, relay=alt1."
 		);
 
 		System.out.println(StringComparison.computeAllLCSubstringsForStringGroup(similarStrings));

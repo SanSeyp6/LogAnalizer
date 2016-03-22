@@ -142,29 +142,36 @@ public class StringComparison {
 		if (similarStrings == null || similarStrings.isEmpty()) {
 			throw new IllegalArgumentException("Arguments should be null or empty");
 		}
-
-		Set<String> lcStrings = new HashSet<String>();
-		Set<String> tmpSet;
-//		System.out.println("simStrings: " + similarStrings);
-		// эффективный обход "каждый с каждым"
-		for (int i = 0; i < similarStrings.size() - 1; i++) {
-			for (int j = i + 1; j < similarStrings.size(); j++) {
-				tmpSet = computeAllLCSubstings(similarStrings.get(i), similarStrings.get(j));
-				if(tmpSet.isEmpty()){
-					return Collections.emptySet();
-				} else {
-					lcStrings.addAll(tmpSet);	
-				}
-				
-//				System.out.println("lcStrings for \"" + similarStrings.get(i) + "\" and \"" + similarStrings.get(j)
-//						+ "\" is: " + computeAllLCSubstings(similarStrings.get(i), similarStrings.get(j)));
-			}
+		if(similarStrings.size() < 2){
+			throw new IllegalArgumentException("similaStrings list should contain at least 2 elements");
 		}
-		retainShortestStringsInSet(lcStrings);
+		
+		Set<String> lcStrings;
+		Set<String> tmpSet = new HashSet<String>();
+		
+		lcStrings = computeAllLCSubstings(similarStrings.get(0), similarStrings.get(1));
+		if(lcStrings.isEmpty()){
+			return Collections.emptySet();		
+		}
+		
+		for(int i=2; i< similarStrings.size(); i++){
+			for(String s: lcStrings){
+				tmpSet.addAll(computeAllLCSubstings(similarStrings.get(i), s)); 
+			}
+			retainLongestStringsInSet(tmpSet);
+			if(tmpSet.isEmpty()){
+				return Collections.emptySet();		
+			} else {
+				lcStrings = tmpSet;
+				tmpSet = new HashSet<String>();
+			}
+			
+		}
+		
 		return lcStrings;
 	}
-
-	private static void retainShortestStringsInSet(Set<String> stringSet) {
+	
+	private static void retainLongestStringsInSet(Set<String> stringSet) {
 //		System.out.println("---------------retainShortestStringsInSet---------------");
 //		System.out.println(stringSet);
 		if(stringSet.isEmpty()){
@@ -173,12 +180,12 @@ public class StringComparison {
 		Iterator<String> iterator = stringSet.iterator(); 
 		String str=iterator.next();
 //		System.out.println("str: "+str);
-		int minLength =str.length();
+		int maxLength =str.length();
 		
 		while(iterator.hasNext()){
 			str=iterator.next();
-			if (str.length() < minLength) {
-				minLength = str.length();
+			if (str.length() > maxLength) {
+				maxLength = str.length();
 			}
 		}
 
@@ -187,13 +194,14 @@ public class StringComparison {
 		iterator = stringSet.iterator();
 		while(iterator.hasNext()){
 			str=iterator.next();
-			if (str.length() > minLength) {
+			if (str.length() < maxLength) {
 				iterator.remove();
 			}
 		}
 //		System.out.println("--end-of-------retainShortestStringsInSet---------------");
 	}
 
+	
 	public static String computeLCSubsequence(String s1, String s2) {
 		// number of lines of each file
 		int M = s1.length();
