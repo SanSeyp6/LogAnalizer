@@ -147,27 +147,42 @@ public class StringComparison {
 		}
 		
 		Set<String> lcStrings;
-		Set<String> tmpSet = new HashSet<String>();
+		Set<String> tmpSet = Collections.emptySet();
+		Set<String> tmpSet2 = new HashSet<String>();
+		Iterator<String> simStrIterator = similarStrings.iterator();
+		Iterator<String> lcStrIterator;
+		String s0 = simStrIterator.next();
+		String s1 = simStrIterator.next();
+		String simStr,s;
 		
-		lcStrings = computeAllLCSubstings(similarStrings.get(0), similarStrings.get(1));
+		lcStrings = computeAllLCSubstings(s0, s1);
+//		System.out.println("lcStrings for \""+s0+"\" and \""+s1+"\": "+ lcStrings);
 		if(lcStrings.isEmpty()){
 			return Collections.emptySet();		
 		}
-		
-		for(int i=2; i< similarStrings.size(); i++){
-			for(String s: lcStrings){
-				tmpSet.addAll(computeAllLCSubstings(similarStrings.get(i), s)); 
+
+		for(; simStrIterator.hasNext(); ){
+			simStr=simStrIterator.next();
+			for(lcStrIterator=lcStrings.iterator(); lcStrIterator.hasNext(); ){
+				s = lcStrIterator.next();
+				tmpSet = computeAllLCSubstings(simStr, s); 
+//				System.out.println("after " +simStr+ " and "+s+": " + tmpSet);
+				if(tmpSet.isEmpty()){
+					lcStrIterator.remove();		
+				} else {
+					tmpSet2.addAll(tmpSet);
+				}
 			}
-			retainLongestStringsInSet(tmpSet);
-			if(tmpSet.isEmpty()){
-				return Collections.emptySet();		
-			} else {
-				lcStrings = tmpSet;
-				tmpSet = new HashSet<String>();
+			lcStrings = tmpSet2;
+			tmpSet2 = new HashSet<String>();
+			if(lcStrings.isEmpty()){
+				return Collections.emptySet();
 			}
-			
+//			lcStrings = tmpSet;
 		}
-		
+		//retainLongestStringsInSet(lcStrings);
+		//retainShortestStringsInSet(lcStrings);
+//		System.out.println(lcStrings);
 		return lcStrings;
 	}
 	
@@ -195,6 +210,36 @@ public class StringComparison {
 		while(iterator.hasNext()){
 			str=iterator.next();
 			if (str.length() < maxLength) {
+				iterator.remove();
+			}
+		}
+//		System.out.println("--end-of-------retainShortestStringsInSet---------------");
+	}
+
+	private static void retainShortestStringsInSet(Set<String> stringSet) {
+//		System.out.println("---------------retainShortestStringsInSet---------------");
+//		System.out.println(stringSet);
+		if(stringSet.isEmpty()){
+			return;
+		}
+		Iterator<String> iterator = stringSet.iterator(); 
+		String str=iterator.next();
+//		System.out.println("str: "+str);
+		int minLength =str.length();
+		
+		while(iterator.hasNext()){
+			str=iterator.next();
+			if (str.length() < minLength) {
+				minLength = str.length();
+			}
+		}
+
+//		System.out.println(minLength);
+		
+		iterator = stringSet.iterator();
+		while(iterator.hasNext()){
+			str=iterator.next();
+			if (str.length() > minLength) {
 				iterator.remove();
 			}
 		}

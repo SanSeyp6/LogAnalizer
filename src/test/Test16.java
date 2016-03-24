@@ -55,6 +55,7 @@ public class Test16 {
 		List<String> similarStrings = TEST_CASE_1;
 		CaseTreeNode root=new CaseTreeNode(similarStrings);
 		root.getUnitedTemplates();
+		System.out.println("TreeSize: "+root.children.get(0).computeTreeSize());
 		
 		String template = "{&} {sophos_internal_id}: {&}o{&}s{&}t{&}gmail-smtp-in.l.google.com[{&}4{&}.2{&}] said: 450-4.2.1 The user you are trying to contact is receiving mail at a rate that 450-4.2.1 prevents additional messages from being delivered. Please resend your 450-4.2.1 message at a later time. If the user is able to receive mail at that 450-4.2.1 time, your message will be delivered. For more information, please 450-4.2.1 visit 450 4.2.1  https://support.google.com/mail/answer/6592 {&}si{&} - gsmtp (in reply to RCPT TO command){&}";
 		Pattern pattern = ParseMessage.buildPatternWithUnnamedPlaceholders(template);
@@ -227,12 +228,17 @@ public class Test16 {
 		 * Должен заменить выходки с PositionTreeNode прошлых версий
 		 * @return
 		 */
-		public static List<List<Integer>> getPositionsAsList(List<List<Integer>> positions){
+		public List<List<Integer>> getPositionsAsList(List<List<Integer>> positions){
 			int arraySize=1;
 			for(List<Integer> list: positions){
 				arraySize *= list.size();
 			}
 			if(arraySize == 0){
+				for(String s: similarStrings){
+					System.err.println(s);
+				}
+				System.err.println(lcStrings);
+				System.err.println(positions);
 				throw new IllegalStateException("array size is 0");
 			}
 			int array[][] = new int[arraySize][positions.size()];
@@ -330,7 +336,7 @@ public class Test16 {
 		CaseTreeNode left, right;
 		
 		public void addToTemplate(StringBuilder sb){
-			
+/*			
 			if((left.isLeaf() || left.isOneSymbolLengthLCStr()) && (right.isLeaf() || right.isOneSymbolLengthLCStr())){
 				if(left.isOneSymbolLengthLCStr() && right.isOneSymbolLengthLCStr()){
 					System.out.println("lcString: \""+lcString+"\"; left.isOneSymbolLengthLCStr(): \""+left.lcSequence+ "\" right.isOneSymbolLengthLCStr(): \""+ right.lcSequence+ "\"");
@@ -348,12 +354,12 @@ public class Test16 {
 			} else {
 				System.out.println("lcString: \""+lcString+"\"; left.children.get(0): \""+left.children.get(0).lcString + "\" right.children.get(0): \""+ right.children.get(0).lcString+ "\"");
 			}
-					
+	*/				
 			
 			if(left.isLeaf()){
 //				sb.append("{&}");
 			} else if(left.isOneSymbolLengthLCStr()){
-				System.out.println("left.isOneSymbolLengthLCStr(). lcSubseq: "+ left.lcSequence);
+//				System.out.println("left.isOneSymbolLengthLCStr(). lcSubseq: "+ left.lcSequence);
 				for(int i=0; i < left.lcSequence.length(); i++){
 					sb.append("{&}");
 					sb.append(left.lcSequence.charAt(i));
@@ -368,7 +374,7 @@ public class Test16 {
 			if(right.isLeaf()){
 //				sb.append("{&}");
 			} else if(right.isOneSymbolLengthLCStr()){
-				System.out.println("right.isOneSymbolLengthLCStr(). lcSubseq: "+ right.lcSequence);
+//				System.out.println("right.isOneSymbolLengthLCStr(). lcSubseq: "+ right.lcSequence);
 				for(int i=0; i < right.lcSequence.length(); i++){
 					sb.append("{&}");
 					sb.append(right.lcSequence.charAt(i));
@@ -377,5 +383,42 @@ public class Test16 {
 				right.children.get(0).addToTemplate(sb);
 			}
 		}
+		
+		/**
+		 * Возвращает количество вариантов взятия дерева от данного варианта разбиения
+		 * @return
+		 */
+		public int computeTreeSize(){
+			int size=1;
+
+			//has children?
+			if(!left.isLeaf() && !left.isOneSymbolLengthLCStr()){
+				size*=left.children.size();
+				for(ChildCase childCase: left.children){
+					size*=childCase.computeTreeSize();
+					if(size ==0){
+						System.err.println(childCase.lcString);
+						throw new IllegalArgumentException("in left");
+					}
+				}
+			}
+			
+			if(!right.isLeaf() && !right.isOneSymbolLengthLCStr()){
+				if(size ==0){
+					System.err.println(this.lcString);
+					throw new IllegalArgumentException("in right");
+				}
+				size*=right.children.size();
+				for(ChildCase childCase: right.children){
+					size*=childCase.computeTreeSize();
+				}
+			}
+			return size;
+		}
 	} 
+	
+	private static final class TemplateTreeNode{
+		String lcString;
+		TemplateTreeNode left, right;
+	}
 }
