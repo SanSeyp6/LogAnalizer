@@ -42,6 +42,7 @@ import org.json.simple.parser.ParseException;
 
 import main.TestingFrame;
 import util.Metrics;
+import util.StringComparison;
 import util.Templates;
 import util.Util;
 
@@ -267,17 +268,17 @@ public class SimilarMessagesComposite extends GeneralComposite {
 				}
 			}
 			//TODO для отладки диких тормозов
-			System.out.println(similarStrings);
+//			System.out.println(similarStrings);
 
 			if(similarStrings.size()==1){
 				return similarStrings;
 			}
 			//TODO для отладки диких тормозов
-			System.out.println("начал вычисление unitedtemplate");
-			
-			String unitedTemplate = Templates.getUnitedTemplate(similarStrings);
+//			System.out.println("начал вычисление unitedtemplate");
+			String lcSequence = StringComparison.computeLCSubsequenceForStringGroup(similarStrings);
+			String unitedTemplate = Templates.getUnitedTemplate(similarStrings, lcSequence);
 			//TODO для отладки диких тормозов
-			System.out.println("закончил вычисление unitedtemplate");
+//			System.out.println("закончил вычисление unitedtemplate");
 			offeredTemplateText.setText(unitedTemplate);
 		} else {
 			changeGroupButton.setEnabled(false);
@@ -365,7 +366,7 @@ public class SimilarMessagesComposite extends GeneralComposite {
 		
 		/**
 		 * Для добавления/удаления в список используйте методы {@link #addChild(TreeNode)} и {@link #removeChild(TreeNode)}
-		 * @return копия списка потомков
+		 * @return список потомков
 		 */
 		public Set<TreeNode> getChildren() {
 			return children;

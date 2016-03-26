@@ -87,7 +87,7 @@ public class Test16 {
 */
 	}
 	
-	private static boolean matchesAll(Pattern pattern, List<String> similarStrings){
+	public static boolean matchesAll(Pattern pattern, List<String> similarStrings){
 		for(String s: similarStrings){
 			if(!pattern.matcher(s).matches()){
 				System.out.println("match fails at: "+s);
@@ -335,6 +335,11 @@ public class Test16 {
 		List<Integer> positions;
 		CaseTreeNode left, right;
 		
+		/**
+		 * Метод пока не дописан. Должен в переданный StringBuilder записывать очередную порцию от общего шаблона.
+		 * Так-то работает, но просчитывает только один вариант. Надо дописывать 
+		 * @param sb
+		 */
 		public void addToTemplate(StringBuilder sb){
 /*			
 			if((left.isLeaf() || left.isOneSymbolLengthLCStr()) && (right.isLeaf() || right.isOneSymbolLengthLCStr())){

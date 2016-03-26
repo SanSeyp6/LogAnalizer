@@ -89,9 +89,9 @@ public class ParseMessage {
 	
 	public static Pattern buildPatternWithUnnamedPlaceholders(String template){
 		String regexp = escapeSpecialRegexChars(template);
-		System.out.println(regexp);
+//		System.out.println(regexp);
 		regexp = regexp.replaceAll("\\\\\\{&\\\\\\}", "(.*?)"); // FUCK! Hate regexp!
-		System.out.println(regexp);
+//		System.out.println(regexp);
 		return Pattern.compile(regexp);
 	}
 }
