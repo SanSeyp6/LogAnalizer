@@ -268,17 +268,17 @@ public class SimilarMessagesComposite extends GeneralComposite {
 				}
 			}
 			//TODO для отладки диких тормозов
-//			System.out.println(similarStrings);
+			System.out.println(similarStrings);
 
 			if(similarStrings.size()==1){
 				return similarStrings;
 			}
 			//TODO для отладки диких тормозов
-//			System.out.println("начал вычисление unitedtemplate");
+			System.out.println("начал вычисление unitedtemplate");
 			String lcSequence = StringComparison.computeLCSubsequenceForStringGroup(similarStrings);
 			String unitedTemplate = Templates.getUnitedTemplate(similarStrings, lcSequence);
 			//TODO для отладки диких тормозов
-//			System.out.println("закончил вычисление unitedtemplate");
+			System.out.println("закончил вычисление unitedtemplate");
 			offeredTemplateText.setText(unitedTemplate);
 		} else {
 			changeGroupButton.setEnabled(false);

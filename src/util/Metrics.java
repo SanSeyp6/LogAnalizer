@@ -46,7 +46,7 @@ public class Metrics {
 		if(Math.min(s1.length(), s2.length()) < lengthThreshold){
 			return checkMetric(s1, s2, Metrics.LevenshteinDistance, 20);
 		} else {
-			return checkMetric(s1, s2, Metrics.OverlapCoefficient, 80);
+			return checkMetric(s1, s2, Metrics.OverlapCoefficient, 90);
 		}
 	}
 

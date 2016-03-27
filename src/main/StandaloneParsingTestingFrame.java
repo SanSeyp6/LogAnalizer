@@ -16,7 +16,7 @@ public class StandaloneParsingTestingFrame {
 		display = new Display();
 		shell = new Shell(display);
 		shell.setText("Testing JFace/SWT Frame");
-		shell.setSize(500, 300);
+		shell.setSize(500, 380);
 		shell.setLayout(new FillLayout(SWT.HORIZONTAL));
 		mainMenu = new Menu(shell, SWT.BAR);
 		shell.setMenuBar(mainMenu);

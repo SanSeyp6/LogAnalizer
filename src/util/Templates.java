@@ -15,7 +15,10 @@ public class Templates {
 	 */
 	public static String getUnitedTemplate(List<String> similarStrings, String lcSequence){
 		StringBuilder template = getInitialTemplateCandidate(similarStrings, lcSequence);
-		template = removeUnneccessaryPlaceholders(template, similarStrings);
+//		System.out.println("initial template: \""+template+"\"");
+//		template = removeUnneccessaryPlaceholders(template, similarStrings);
+//		System.out.println("template after removal: \""+template+"\"");
+		replaceUnnamedPlaceholdersWithNumbered(template);
 		return template.toString();
 	}
 
@@ -126,10 +129,13 @@ public class Templates {
 		index = candidate.indexOf("{&}", index);
 		while(index != -1){
 			candidate.delete(index, index+3);
+			System.out.println("current candidate: \""+candidate+"\"");
 			pattern = ParseMessage.buildPatternWithUnnamedPlaceholders(candidate.toString());
 			if(matchesAll(pattern, similarStrings)){
 				template = candidate;
+				System.out.println("matches all");
 			} else {
+				System.out.println("not matches all");
 				index++;
 			}
 			candidate=new StringBuilder(template);
@@ -142,12 +148,23 @@ public class Templates {
 	public static boolean matchesAll(Pattern pattern, List<String> similarStrings){
 		for(String s: similarStrings){
 			if(!pattern.matcher(s).matches()){
-//				System.out.println("match fails at: "+s);
 				return false;
 			}
 		}
 		
 		return true;
+	}
+
+	private static void replaceUnnamedPlaceholdersWithNumbered(StringBuilder template) {
+		int index=0;
+		int indexesCount=0;
+		
+		index=template.indexOf("{&}");
+		while(index!=-1){
+			template.replace(index+1, index+2, String.valueOf(indexesCount));
+			indexesCount++;
+			index=template.indexOf("{&}", index);	
+		}
 	}
 
 }

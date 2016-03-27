@@ -2,7 +2,6 @@ package test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
 import util.ParseMessage;
@@ -159,6 +158,18 @@ public class Test20 {
 		}
 		
 		return template;
+	}
+
+	private static void replaceUnnamedPlaceholdersWithNumbered(StringBuilder template) {
+		int index=0;
+		int indexesCount=0;
+		
+		index=template.indexOf("{&}");
+		while(index!=-1){
+			template.replace(index+1, index+2, String.valueOf(indexesCount));
+			indexesCount++;
+			index=template.indexOf("{&}", index);	
+		}
 	}
 
 }

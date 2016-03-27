@@ -1,23 +1,55 @@
 Generation 0:
 Total messages processed: 218587
-Parsed messages: 149712
-Unparsed Messages: 68875
+Parsed messages: 166072
+Unparsed Messages: 52515
 
-
+Generation 1:
+Total messages processed: 218587
+Parsed messages: 203895
+Unparsed Messages: 14692
 
 Generation 2:
 Total messages processed: 218587
-Parsed messages: 209292
-Unparsed Messages: 9295
-
+Parsed messages: 208797
+Unparsed Messages: 9790
 
 Generation 3:
 Total messages processed: 218587
-Parsed messages: 210959
-Unparsed Messages: 7628
-
+Parsed messages: 210632
+Unparsed Messages: 7955
 
 Generation 4:
 Total messages processed: 218587
-Parsed messages: 213713
-Unparsed Messages: 4874
+Parsed messages: 214916
+Unparsed Messages: 3671
+
+Generation 5:
+Total messages processed: 218587
+Parsed messages: 215299
+Unparsed Messages: 3288
+
+Generation 6:
+Total messages processed: 218587
+Parsed messages: 215759
+Unparsed Messages: 2828
+
+Generation 7:
+Total messages processed: 218587
+Parsed messages: 216116
+Unparsed Messages: 2471
+
+Generation 8:
+Total messages processed: 218587
+Parsed messages: 216152
+Unparsed Messages: 2435
+
+Generation 9:
+Total messages processed: 218587
+Parsed messages: 216166
+Unparsed Messages: 2421
+
+Теперь делаем по всем оставшимся
+Generation 10:
+Total messages processed: 218587
+Parsed messages: 216234
+Unparsed Messages: 2353
