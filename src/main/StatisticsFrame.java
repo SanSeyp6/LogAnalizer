@@ -5,21 +5,21 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
 
-import parse.standalone.StandaloneParseComposite;
+import statistics.StatisticsComposite;
 
-public class StandaloneParsingTestingFrame {
+public class StatisticsFrame {
 	private final Display display;
 	private final Shell shell;
 	private final Menu mainMenu;
 	
-	public StandaloneParsingTestingFrame() {
+	public StatisticsFrame() {
 		display = new Display();
 		shell = new Shell(display);
-		shell.setText("Parser GUI");
-		shell.setSize(500, 380);
+		shell.setText("Statistics Frame");
 		shell.setLayout(new FillLayout(SWT.HORIZONTAL));
 		mainMenu = new Menu(shell, SWT.BAR);
 		shell.setMenuBar(mainMenu);
+		shell.setSize(600, 300);
 	}
 	
 	public Shell getShell(){
@@ -41,12 +41,12 @@ public class StandaloneParsingTestingFrame {
 	}
 
 	public static void main(String[] args) {
-		StandaloneParsingTestingFrame tf=new StandaloneParsingTestingFrame();
+		StatisticsFrame tf=new StatisticsFrame();
 
 		// use this to quickly test Composites
 		//new YourComposite(tf.getShell(), SWT.NONE);
+		new StatisticsComposite(tf.getShell(), SWT.NONE);
 		
-		new StandaloneParseComposite(tf.getShell(), SWT.NONE);
 
 		// runs testing frame
 		tf.run();

@@ -28,6 +28,7 @@ import org.json.simple.parser.ParseException;
 
 import old.ParseMessagesComposite;
 import old.ParseMessagesComposite.Entry;
+import ru.hse.performance.PerformanceUtil;
 import util.JsonReadWriteUtils;
 import util.ParseMessage;
 import util.Util;
@@ -170,6 +171,7 @@ public class StandaloneParseComposite extends Composite {
 				getShell().getDisplay().asyncExec(new Runnable() {
 					@Override
 					public void run() {
+						PerformanceUtil.initialize();
 						try{
 							readFiles(jsonMessagesFileName, templatesFileName);
 							parseMessages(messages, templates);
@@ -183,6 +185,7 @@ public class StandaloneParseComposite extends Composite {
 						messages = null;
 						templates = null;
 						System.gc();
+						PerformanceUtil.printTotalTime();
 						}
 					}
 				);

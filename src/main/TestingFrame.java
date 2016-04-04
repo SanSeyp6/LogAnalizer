@@ -32,7 +32,7 @@ public class TestingFrame {
 	public TestingFrame() {
 		display = new Display();
 		shell = new Shell(display);
-		shell.setText("Testing JFace/SWT Frame");
+		shell.setText("Templator");
 		shell.setLayout(new FillLayout(SWT.HORIZONTAL));
 		mainMenu = new Menu(shell, SWT.BAR);
 		shell.setMenuBar(mainMenu);
