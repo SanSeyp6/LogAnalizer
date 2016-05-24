@@ -1,0 +1,54 @@
+@RELATION messages
+
+@ATTRIBUTE timegenerated-rfc-3339 date yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX
+@ATTRIBUTE timereported-rfc-3339 date yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX
+@ATTRIBUTE hostname string
+@ATTRIBUTE fromhost string
+@ATTRIBUTE fromhost-ip string
+@ATTRIBUTE syslogtag string
+@ATTRIBUTE programname string
+@ATTRIBUTE procid string
+@ATTRIBUTE app-name string
+@ATTRIBUTE pri-text string
+@ATTRIBUTE pri NUMERIC
+@ATTRIBUTE uuid string
+@ATTRIBUTE msgid string
+@ATTRIBUTE msg string
+
+% тут надо будет хранить шаблончики
+@ATTRIBUTE template {
+
+}
+
+% а тут их продублировать
+@ATTRIBUTE prev-template {
+
+}
+
+
+
+@DATA
+{
+	"timegenerated-rfc-3339":"2016-02-26T03:28:11.916474+03:00"
+	"timegenerated":"Feb 26 03:28:11"
+	"timereported-rfc-3339":"2016-02-26T03:28:11.916474+03:00"
+	"timereported":"Feb 26 03:28:11"
+	"hostname":"vm-test"
+	"fromhost":"vm-test"
+	"fromhost-ip":"127.0.0.1"
+	"syslogtag":"rsyslogd:"
+	"programname":"rsyslogd"
+	"procid":"-"
+	"app-name":"rsyslogd"
+	"pri-text":"syslog.info"
+	"pri":"46"
+	"syslogfacility-text":"syslog"
+	"syslogfacility":"5"
+	"syslogseverity-text":"info"
+	"syslogseverity":"6"
+	"uuid":"D66D494D5292441FA76B17CB9F7DF5FD"
+	"msgid":"-"
+	"msg":" [origin software=\"rsyslogd\" swVersion=\"8.14.0\" x-pid=\"49062\" x-info=\"http:\/\/www.rsyslog.com\"] start"
+	"structured-data":"-"
+}
+
